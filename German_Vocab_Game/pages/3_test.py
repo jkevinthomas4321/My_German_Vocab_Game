@@ -2,9 +2,13 @@ import os
 
 import streamlit as st
 import random
+
+from numpy.ma.core import transpose
+
 import main_page as gs
 import pandas as pd
-
+gs.set_background("images\\test_page_bg.jpg")
+gs.sidebar()
 vocab_files = gs.load_vocab_files()
 print(vocab_files)
 
@@ -30,13 +34,14 @@ if 'word_selection_done' not in st.session_state:
     st.session_state.word_selection_done = False  # Indicates if random words have been picked
 
 def tester(vocab_data):
+    global incorrect_ans_id, ques_for_users
     all_eng = [(index, row['word_class'], row['english']) for index, row in vocab_data.iterrows()]
 
     # Generate selected_words ONLY if they haven’t been selected yet
     if not st.session_state.get("word_selection_done", False):
         word_num = st.number_input(
             "How many words would you like to learn?",
-            min_value=1, max_value=len(all_eng), step=5
+            min_value=0, max_value=len(all_eng), step=5
         )
         if st.button("Generate Words"):
             indices_all_eng = [row[0] for row in all_eng]
@@ -46,7 +51,7 @@ def tester(vocab_data):
 
     # Only proceed if words have been selected
     if st.session_state.get("word_selection_done", False) and st.session_state.selected_words:
-        rows_with_ans = vocab_data.loc[st.session_state.selected_words]
+        rows_with_ans = vocab_data.iloc[st.session_state.selected_words]
         ques_for_users = rows_with_ans.copy()
 
         # Replace answers with placeholders for user input
@@ -56,20 +61,19 @@ def tester(vocab_data):
             )
 
         st.subheader("Questions Table")
-        user_ans = st.data_editor(
-            ques_for_users, num_rows="dynamic", use_container_width=True, key="diary_editor"
-        )
+        user_ans = st.data_editor(ques_for_users, num_rows="dynamic", use_container_width=True, key="diary_editor")
 
         # Submit button
         if st.button("Submit"):
-            marks, correct_answers_id = compare_dataframes(rows_with_ans, user_ans)
-            #st.write("📊 You got", marks, "words correct.")
+            marks, correct_answers_id, incorrect_ans_id = compare_dataframes(rows_with_ans, user_ans)
             if correct_answers_id:
                 st.session_state.correct_rows = marks
                 st.session_state.correct_answers_id = correct_answers_id
                 st.session_state.awaiting_dairy_choice = True
             else:
                 st.warning("No words were correct. Nothing to add to diary.")
+                st.write("Here is the correct answers for the questions for which your answers were wrong. Revise it!!")
+                st.dataframe(revision(incorrect_ans_id, rows_with_ans))
                 # Reset selection to allow new test
                 st.session_state.word_selection_done = False
                 st.session_state.selected_words = None
@@ -77,13 +81,14 @@ def tester(vocab_data):
     # Handle diary save if awaiting choice
     if st.session_state.get("awaiting_dairy_choice", False):
         dairy_status = add_words_to_dairy(st.session_state.correct_rows,st.session_state.correct_answers_id,vocab_data)
-        st.write("Diary status:", dairy_status)
-
+        st.write(f"Diary status: {dairy_status}. Click submit button again to continue. ")
+        st.dataframe(revision(incorrect_ans_id, rows_with_ans))
     return None
 
 
 def compare_dataframes(rows_with_ans, user_ans):
     correct_answers_id = []
+    incorrect_answers_id = []
 
     if rows_with_ans.shape[0] != user_ans.shape[0]:
         st.error("Ques sheet doesn't have the same number of rows as answers.")
@@ -98,9 +103,11 @@ def compare_dataframes(rows_with_ans, user_ans):
         )
         if are_equal:
             correct_answers_id.append(row_id)
+        else:
+            incorrect_answers_id.append(row_id)
     log_score(rows_with_ans.shape[0], len(correct_answers_id))
 
-    return len(correct_answers_id), correct_answers_id
+    return len(correct_answers_id), correct_answers_id, incorrect_answers_id
 
 
 def add_words_to_dairy(correct_rows, correct_answers_id, vocab_data):
@@ -154,6 +161,12 @@ def add_words_to_dairy(correct_rows, correct_answers_id, vocab_data):
 
     return None
 
+def revision(incorrect_answers_id, user_ques_list):
+    revision_df = pd.DataFrame()
+    for wrong_ans in incorrect_answers_id:
+        revision_df = pd.concat([revision_df, user_ques_list.loc[wrong_ans]], ignore_index=True, axis=1)
+    return revision_df.transpose()
+
 def log_score(correct, total):
     from datetime import datetime
     score_file = os.path.join(gs.VOCAB_FOLDER, "score_history.csv")
@@ -196,8 +209,8 @@ if file_choice != "Select a file":
         if selected_option == "Test random words from a file":
             tester(all_vocab)
 
-        elif selected_option == "Test words in order from a file":
-            pass
+        #elif selected_option == "Test words in order from a file":
+        #    pass
 
         elif selected_option == "Test based on a word class":
             word_classes = ["noun", "verb", "adjective", "adverb", "pronoun", "preposition", "conjunction",
@@ -206,7 +219,10 @@ if file_choice != "Select a file":
             # Create a radio button to select a word class
             word_class = st.radio("Select a word class:", word_classes)
             filtered_vocab = all_vocab[all_vocab['word_class'] == word_class].reset_index(drop=True)
-            tester(filtered_vocab)
+            if filtered_vocab.empty:
+                st.warning(f"No words found for the class '{word_class}'. Please try another class.")
+            else:
+                tester(filtered_vocab)
 
 
     else:

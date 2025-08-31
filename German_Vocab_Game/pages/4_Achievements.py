@@ -2,6 +2,9 @@ import streamlit as st
 import main_page as gs
 import pandas as pd
 
+gs.set_background("images\\achieve_page_bg.jpg")
+gs.sidebar()
+
 st.title("Score & Achievements")
 
 # Load scores
@@ -10,9 +13,6 @@ score_file = gs.load_csv(gs.VOCAB_FOLDER + "/score_history.csv", expected_column
 if score_file.empty:
     st.info("No scores recorded yet.")
 else:
-    st.subheader("Score History")
-    st.dataframe(score_file)
-
     # Stats
     best_score = score_file["ScorePercent"].max()
     avg_score = round(score_file["ScorePercent"].mean(), 1)
@@ -34,3 +34,5 @@ else:
         else:
             streak = 0
     st.write(f"🔥 Max Full Marks Streak: {max_streak}")
+    st.subheader("Score History")
+    st.dataframe(score_file)

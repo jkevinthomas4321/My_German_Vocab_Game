@@ -2,10 +2,9 @@ import unicodedata
 import pandas as pd
 import shutil
 import os
-import ast
+import base64
 import re
 import streamlit as st
-import random
 
 # ----------------- Constants -----------------
 VOCAB_FOLDER = "vocab_data"  # Folder to store all vocabulary-related CSV files
@@ -134,8 +133,6 @@ def load_csv(file_path, expected_columns=None):
 
     return df
 
-
-
 def save_csv(df, file_path):
     """
     Saves a pandas DataFrame to a CSV file.
@@ -143,23 +140,59 @@ def save_csv(df, file_path):
     df.to_csv(file_path, index=False, encoding='utf-8')
 
 
-st.title("My German Vocab Game")
-st.header("Welcome to the game!!")
+
+#"C:\Users\Asus\PycharmProjects\My_German_Vocab_Game\German_Vocab_Game\images\moroccan-flower-dark.png"
+def set_background(image_file):
+    with open(image_file, "rb") as file:
+        encoded = base64.b64encode(file.read()).decode()
+    css = f"""
+    <style>
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/jpg;base64,{encoded}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }}
+    </style>
+    """
+    st.markdown(css, unsafe_allow_html=True)
+
+def sidebar():
+    st.set_page_config(page_title="Game Panel", layout="wide")
+
+    sidebar_style = """
+    <style>
+    /* Sidebar background */
+    section[data-testid="stSidebar"] {
+        background-color: #173052;  /* Dark gray */
+        color: white;              /* Text color */
+    }
+    </style>
+    """
+
+    st.markdown(sidebar_style, unsafe_allow_html=True)
+
+set_background("images\main_page_bg.jpg")
+sidebar()
+
+
+st.markdown("<h1 style='text-align: center; font-weight: bold;'>My German Vocab Game</h1>",unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; font-style: italic;'>Welcome to the game!</h2>",unsafe_allow_html=True)
 
 # Initialize the user_name in session state if it doesn't exist yet
 if "user_name" not in st.session_state:
     st.session_state.user_name = ""
 
-# Display the text input and button only if the name is not yet entered
-if st.session_state.user_name == "":
-    user_name = st.text_input("Enter your name: ")
-    submit_button = st.button("Submit")
+if "submit" not in st.session_state:
+    st.session_state.submit = False
 
-    # Update session state if the user submits their name
-    if submit_button and user_name:
-        st.session_state.user_name = user_name
+def handle_submit():
+    st.session_state.submit = True
 
-# Greet the user after the name is entered
-if st.session_state.user_name:
-    st.write(f"\nHallo! {st.session_state.user_name}, Guten Tag")
-    st.write(f"\nPlease select any action from the sidebar to your left <--")
+if not st.session_state.submit:
+    user_name = st.text_input("Enter your name: ", key="user_name")
+    submit_button = st.button("Submit", on_click=handle_submit)
+
+else:
+    st.markdown(f"<h2 style='text-align: center;'>👋 Hallo, <strong>{st.session_state.user_name}</strong>! Guten Tag 🌞</h2>",unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; font-size: 18px;'>👉 <strong>Please select an action from the panel to your left!</strong> 🧭</div>",unsafe_allow_html=True)

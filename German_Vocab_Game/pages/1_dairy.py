@@ -1,12 +1,9 @@
 import streamlit as st
 import main_page as gs
 import pandas as pd
-
-# Initialize the session_state variable safely
-if "user_name" not in st.session_state:
-    st.session_state.user_name = "Your personal"  # or any sensible default
-
-st.title(f"📝 This is {st.session_state.user_name} Diary")
+gs.set_background("images\diary_page_bg.jpg")
+gs.sidebar()
+st.markdown("<h1 style='text-align: center; font-weight: bold;'>📝 This is your personal Diary</h1>",unsafe_allow_html=True)
 
 # Load all vocab files
 vocab_files = gs.load_vocab_files()

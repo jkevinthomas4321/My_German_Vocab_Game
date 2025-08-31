@@ -2,9 +2,10 @@ import streamlit as st
 import random
 import main_page as gs
 import pandas as pd
+gs.set_background("images\\learn_page_bg.jpg")
+gs.sidebar()
 
-# Streamlit UI
-st.title("This is the session to learn new words")
+st.markdown("<h1 style='text-align: center; font-weight: bold;'>Learn New Vocabulary</h1>",unsafe_allow_html=True)
 
 # Load vocabulary files and filter out unwanted ones
 vocab_files = gs.load_vocab_files()
@@ -38,20 +39,17 @@ if file_choice != "Select a file":
     # Check if the vocab data is empty
     if not vocab_data.empty:
         st.write(f"You selected: {file_choice}")
-        #st.write("Preview of the vocabulary data:")
-        #st.dataframe(vocab_data.head())  # Display first few rows of vocab data
-
-        # Now you can safely use vocab_data for further operations
         options = ["Learn random words from a file", "Learn in order from a file", "Learn based on a word class"]
         selected_option = st.selectbox("Choose an option:", options)
 
         if selected_option == "Learn random words from a file":
-            word_num = st.slider("How many words would you like to learn?", min_value=1, max_value=vocab_data.shape[0], step=1)
+            word_num = st.slider("How many words would you like to learn?", min_value=0, max_value=vocab_data.shape[0], step=1)
             selected_words = random.sample(range(vocab_data.shape[0]), word_num)
             show = pd.DataFrame()
             for i in selected_words:
                 show = pd.concat([show, vocab_data.iloc[[i]]], axis=0)
-            st.dataframe(show)
+            if show.shape[0] > 0:
+                st.dataframe(show)
 
         elif selected_option == "Learn in order from a file":
             start = st.number_input(f"Enter the starting index from which you would like to learn from the selected file", min_value=0, max_value=vocab_data.shape[0]-1)
@@ -72,20 +70,15 @@ if file_choice != "Select a file":
             if filtered_vocab.empty:
                 st.warning(f"No words found for the class '{word_class}'. Please try another class.")
             else:
-                #st.write(f"Words found for the class '{word_class}':")
-                #st.dataframe(filtered_vocab)
-
-                # Optional: Show random words or allow further learning options with this filtered vocab
-                word_num = st.slider(f"How many words would you like to learn from the class '{word_class}'?",
-                                     min_value=1, max_value=filtered_vocab.shape[0], step=1)
+                word_num = st.slider(f"How many words would you like to learn from the class '{word_class}'?",min_value=0, max_value=filtered_vocab.shape[0], step=1)
                 selected_words = random.sample(range(filtered_vocab.shape[0]), word_num)
                 show = pd.DataFrame()
 
                 for i in selected_words:
                     show = pd.concat([show, filtered_vocab.iloc[[i]]], axis=0)
 
-                st.write(f"Randomly selected words from '{word_class}':")
-                st.dataframe(show)
+                if show.shape[0] > 0:
+                    st.dataframe(show)
 
     else:
         st.write(f"No data available in the selected file: {file_choice}")
