@@ -18,7 +18,7 @@ else:
     avg_score = round(score_file["ScorePercent"].mean(), 1)
     total_games = len(score_file)
 
-    st.subheader("Statistics")
+    #st.subheader("Statistics")
     st.write(f"🏆 Best Score: {best_score}%")
     st.write(f"📊 Average Score: {avg_score}%")
     st.write(f"🎮 Total Games Played: {total_games}")

@@ -3,8 +3,6 @@ import os
 import streamlit as st
 import random
 
-from numpy.ma.core import transpose
-
 import main_page as gs
 import pandas as pd
 gs.set_background("images\\test_page_bg.jpg")
@@ -34,13 +32,13 @@ if 'word_selection_done' not in st.session_state:
     st.session_state.word_selection_done = False  # Indicates if random words have been picked
 
 def tester(vocab_data):
-    global incorrect_ans_id, ques_for_users
+    global incorrect_ans_id, ques_for_users, rows_with_ans
     all_eng = [(index, row['word_class'], row['english']) for index, row in vocab_data.iterrows()]
 
     # Generate selected_words ONLY if they haven’t been selected yet
     if not st.session_state.get("word_selection_done", False):
         word_num = st.number_input(
-            "How many words would you like to learn?",
+            "How many words would you like to test?",
             min_value=0, max_value=len(all_eng), step=5
         )
         if st.button("Generate Words"):
@@ -66,7 +64,9 @@ def tester(vocab_data):
         # Submit button
         if st.button("Submit"):
             marks, correct_answers_id, incorrect_ans_id = compare_dataframes(rows_with_ans, user_ans)
-            if correct_answers_id:
+            if marks > 0:
+                st.write("Here is the correct answers for the questions for which your answers were wrong. Revise it!!")
+                st.dataframe(revision(incorrect_ans_id, rows_with_ans))
                 st.session_state.correct_rows = marks
                 st.session_state.correct_answers_id = correct_answers_id
                 st.session_state.awaiting_dairy_choice = True
@@ -82,20 +82,19 @@ def tester(vocab_data):
     if st.session_state.get("awaiting_dairy_choice", False):
         dairy_status = add_words_to_dairy(st.session_state.correct_rows,st.session_state.correct_answers_id,vocab_data)
         st.write(f"Diary status: {dairy_status}. Click submit button again to continue. ")
-        st.dataframe(revision(incorrect_ans_id, rows_with_ans))
     return None
 
 
-def compare_dataframes(rows_with_ans, user_ans):
+def compare_dataframes(rows_with_answer, user_ans):
     correct_answers_id = []
     incorrect_answers_id = []
 
-    if rows_with_ans.shape[0] != user_ans.shape[0]:
+    if rows_with_answer.shape[0] != user_ans.shape[0]:
         st.error("Ques sheet doesn't have the same number of rows as answers.")
         return 0, []
 
-    for row_id in rows_with_ans.index:
-        ans_list = rows_with_ans.loc[row_id].tolist()
+    for row_id in rows_with_answer.index:
+        ans_list = rows_with_answer.loc[row_id].tolist()
         user_ans_list = user_ans.loc[row_id].tolist()
         are_equal = all(
             a == b for a, b in zip(ans_list, user_ans_list)
@@ -105,7 +104,8 @@ def compare_dataframes(rows_with_ans, user_ans):
             correct_answers_id.append(row_id)
         else:
             incorrect_answers_id.append(row_id)
-    log_score(rows_with_ans.shape[0], len(correct_answers_id))
+    #Score calculation
+    log_score(rows_with_answer.shape[0], len(correct_answers_id))
 
     return len(correct_answers_id), correct_answers_id, incorrect_answers_id
 
@@ -167,7 +167,7 @@ def revision(incorrect_answers_id, user_ques_list):
         revision_df = pd.concat([revision_df, user_ques_list.loc[wrong_ans]], ignore_index=True, axis=1)
     return revision_df.transpose()
 
-def log_score(correct, total):
+def log_score(total, correct):
     from datetime import datetime
     score_file = os.path.join(gs.VOCAB_FOLDER, "score_history.csv")
     df = gs.load_csv(score_file, expected_columns=["Date", "ScorePercent", "TotalQuestions"])
@@ -209,9 +209,6 @@ if file_choice != "Select a file":
         if selected_option == "Test random words from a file":
             tester(all_vocab)
 
-        #elif selected_option == "Test words in order from a file":
-        #    pass
-
         elif selected_option == "Test based on a word class":
             word_classes = ["noun", "verb", "adjective", "adverb", "pronoun", "preposition", "conjunction",
                             "interjection"]
@@ -223,7 +220,6 @@ if file_choice != "Select a file":
                 st.warning(f"No words found for the class '{word_class}'. Please try another class.")
             else:
                 tester(filtered_vocab)
-
 
     else:
         st.warning(f"No data available in the selected file: {file_choice}")
