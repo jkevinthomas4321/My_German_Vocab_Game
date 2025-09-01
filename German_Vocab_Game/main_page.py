@@ -164,7 +164,7 @@ def sidebar():
     <style>
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background-color: #173052;  /* Dark gray */
+        background-color: #000000;  /* Dark gray */
         color: white;              /* Text color */
     }
     </style>
@@ -176,8 +176,8 @@ set_background("images\main_page_bg.jpg")
 sidebar()
 
 
-st.markdown("<h1 style='text-align: center; font-weight: bold;'>My German Vocab Game</h1>",unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center; font-style: italic;'>Welcome to the game!</h2>",unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; font-weight: bold; color:#000000; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>My German Vocab Game</h1>",unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; font-style: italic; color:#000000; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>Welcome to the game!</h2>",unsafe_allow_html=True)
 
 # Initialize the user_name in session state if it doesn't exist yet
 if "user_name" not in st.session_state:
@@ -189,10 +189,10 @@ if "submit" not in st.session_state:
 def handle_submit():
     st.session_state.submit = True
 
-if not st.session_state.submit:
-    user_name = st.text_input("Enter your name: ", key="user_name")
-    submit_button = st.button("Submit", on_click=handle_submit)
+#if not st.session_state.submit:
+ #   user_name = st.text_input("Enter your name: ", key="user_name")
+  #  submit_button = st.button("Submit", on_click=handle_submit)
 
-else:
-    st.markdown(f"<h2 style='text-align: center;'>👋 Hallo, <strong>{st.session_state.user_name}</strong>! Guten Tag 🌞</h2>",unsafe_allow_html=True)
-    st.markdown("<div style='text-align: center; font-size: 18px;'>👉 <strong>Please select an action from the panel to your left!</strong> 🧭</div>",unsafe_allow_html=True)
+#else:
+st.markdown(f"<h2 style='text-align: center; color:#000000; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>👋 Hallo, <strong>Deutsch Learner</strong>! Guten Tag 🌞</h2>",unsafe_allow_html=True)
+#st.markdown("<div style='text-align: center; font-size: 18px; color:#000000; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>👉 <strong>Please select an action from the panel to your left!</strong> 🧭</div>",unsafe_allow_html=True)
