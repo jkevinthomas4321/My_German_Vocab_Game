@@ -1,18 +1,18 @@
 # 🇩🇪 German Vocabulary Game
 
 ## ✨ What is this?
-
 A **Streamlit-based learning app** to learn and practice German vocabulary through tests and progress tracking.  
 Designed to help learners memorize German nouns, verbs, and more — while keeping a personal vocabulary diary and earning achievements.  
 
 ## ✨ Background
-
 I am a student. I learned python and pandas, wanted to create something sso I created this to solve my own problem, which is German vocab learning. 
 The core idea is to create a virtual vocabulary diary for users.
 The current version has all basic ideas I had and it is mostly stable.
-This game works based on csv files, which acts as repos containing the language data. I have added 2 repos which can be used initially. You can ask any AI to create a csv with word you require and can use it to learn vocabulary. Remember to add the vocab file in vocab data folder.
+This game works based on csv files, which acts as repos containing the language data. I have added 2 repos which can be used initially. 
+You can ask any AI to create a .csv with words you require and can use it to learn vocabulary. Remember to add the vocab file in vocab data folder.
+(Beta: You can also ask AI to create a csv of vocab in any language based on the column headings in the diary .csv file and use it to learn the language.)
 Any improvements like features or bug reports or fixes are widely welcome.
-
+This is currently local and works in our system. It is currently not equipped to host this in a server and add login features.
 ---
 
 ## ✨ Features
