@@ -5,7 +5,7 @@ A **Streamlit-based learning app** to learn and practice German vocabulary throu
 Designed to help learners memorize German nouns, verbs, and more — while keeping a personal vocabulary diary and earning achievements.  
 
 ## ✨ Background
-I am a student. I learned python and pandas, wanted to create something sso I created this to solve my own problem, which is German vocab learning. 
+I am a student. I learned python and pandas, wanted to create something so I created this to solve my own problem, which is German vocabulary learning. 
 The core idea is to create a virtual vocabulary diary for users.
 The current version has all basic ideas I had and it is mostly stable.
 This game works based on csv files, which acts as repos containing the language data. I have added a repo which can be used initially. 
