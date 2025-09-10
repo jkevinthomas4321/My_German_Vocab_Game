@@ -51,16 +51,27 @@ This is currently local and works in our system. It is currently not equipped to
 
 📦 German_Vocab_Game
 ├── main_page.py # Entry point (welcome, vocab loader, helpers)
+
 ├── pages/
+
 │ ├── 1_dairy.py # Add / edit words in diary
+
 │ ├── 2_learn_vocab.py # Flashcards / learning mode
+
 │ ├── 3_test_game.py # Quiz/test mode
+
 │ └── 4_achievements.py # Achievements & score history
+
 ├── vocab_data/
+
 │ ├── diary.csv # Main vocabulary diary
+
 │ ├── diary_backup.csv # Backup (auto-generated)
+
 │ ├── 1000_german_vocab
+
 │ └── score_history.csv # Stores game results
+
 └── README.md
 
 Requirements:
