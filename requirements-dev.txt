@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=8
+# Only needed to rebuild data/wordlists/german_core.csv (python tools/build_wordlist.py)
+wordfreq>=3.1

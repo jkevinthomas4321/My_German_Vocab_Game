@@ -1,0 +1,516 @@
+word_class,english,article,german,plural,past_tense,perfect_tense,zipf
+conjunction,and,,und,,,,7.42
+preposition,to (a person or place),,zu,,,,7.01
+preposition,of / from (a person),,von,,,,6.99
+preposition,with,,mit,,,,6.98
+preposition,for,,für,,,,6.88
+adverb,also,,auch,,,,6.78
+conjunction,when (in the past),,als,,,,6.71
+conjunction,that,,dass,,,,6.69
+preposition,at / near,,bei,,,,6.66
+conjunction,but,,aber,,,,6.63
+preposition,out of / from (a place),,aus,,,,6.6
+preposition,after,,nach,,,,6.56
+adverb,still,,noch,,,,6.55
+adverb,only,,nur,,,,6.52
+conjunction,if / whenever,,wenn,,,,6.51
+conjunction,or,,oder,,,,6.5
+verb,to become,,werden,,wurde,ist geworden,6.49
+verb,to have,,haben,,hatte,hat gehabt,6.45
+preposition,about / over,,über,,,,6.39
+conjunction,then,,dann,,,,6.35
+adverb,already,,schon,,,,6.34
+interjection,yes,,ja,,,,6.33
+verb,to be,,sein,,war,ist gewesen,6.32
+preposition,in front of,,vor,,,,6.31
+adverb,here,,hier,,,,6.26
+preposition,through,,durch,,,,6.26
+preposition,until,,bis,,,,6.23
+adverb,now,,jetzt,,,,6.21
+adverb,always,,immer,,,,6.21
+adverb,again,,wieder,,,,6.18
+adverb,very,,sehr,,,,6.14
+verb,to be able to,,können,,konnte,hat gekonnt,6.12
+preposition,under,,unter,,,,6.1
+adjective,good,,gut,,,,6.09
+preposition,against,,gegen,,,,6.03
+noun,time,die,Zeit,Zeiten,,,5.99
+verb,to do / make,,machen,,machte,hat gemacht,5.98
+conjunction,for / because (coordinating),,denn,,,,5.97
+adjective,easy,,einfach,,,,5.95
+preposition,without,,ohne,,,,5.95
+conjunction,because,,weil,,,,5.95
+preposition,since,,seit,,,,5.91
+adverb,today,,heute,,,,5.88
+noun,life,das,Leben,Leben,,,5.86
+verb,to live (be alive),,leben,,lebte,hat gelebt,5.86
+noun,year,das,Jahr,Jahre,,,5.84
+preposition,between,,zwischen,,,,5.83
+verb,to have to,,müssen,,musste,hat gemusst,5.78
+adverb,there,,dort,,,,5.78
+verb,to let / leave,,lassen,,ließ,hat gelassen,5.76
+adverb,really,,wirklich,,,,5.75
+noun,man,der,Mann,Männer,,,5.73
+adverb,maybe,,vielleicht,,,,5.72
+verb,to want,,wollen,,wollte,hat gewollt,5.71
+verb,to come,,kommen,,kam,ist gekommen,5.71
+interjection,please,,bitte,,,,5.7
+noun,day,der,Tag,Tage,,,5.69
+verb,to see,,sehen,,sah,hat gesehen,5.69
+verb,to say,,sagen,,sagte,hat gesagt,5.68
+preposition,during,,während,,,,5.68
+noun,way,der,Weg,Wege,,,5.67
+noun,clock,die,Uhr,Uhren,,,5.67
+noun,end,das,Ende,Enden,,,5.67
+adverb,never,,nie,,,,5.67
+noun,woman,die,Frau,Frauen,,,5.66
+noun,city,die,Stadt,Städte,,,5.66
+noun,world,die,Welt,Welten,,,5.66
+verb,to go,,gehen,,ging,ist gegangen,5.65
+interjection,thank you,,danke,,,,5.64
+verb,to give,,geben,,gab,hat gegeben,5.6
+verb,to find,,finden,,fand,hat gefunden,5.6
+noun,money,das,Geld,,,,5.59
+noun,part,der,Teil,Teile,,,5.59
+adjective,correct,,richtig,,,,5.58
+adverb,almost,,fast,,,,5.58
+noun,work,die,Arbeit,Arbeiten,,,5.57
+noun,question,die,Frage,Fragen,,,5.57
+verb,to know (a fact),,wissen,,wusste,hat gewusst,5.55
+adverb,together,,zusammen,,,,5.55
+noun,case,der,Fall,Fälle,,,5.54
+adjective,safe,,sicher,,,,5.54
+adjective,beautiful,,schön,,,,5.52
+interjection,no,,nein,,,,5.52
+noun,kind (sort),die,Art,Arten,,,5.51
+verb,to be supposed to,,sollen,,sollte,hat gesollt,5.51
+adjective,fast,,schnell,,,,5.51
+verb,to stand,,stehen,,stand,hat gestanden,5.5
+noun,game,das,Spiel,Spiele,,,5.49
+noun,page,die,Seite,Seiten,,,5.49
+noun,love,die,Liebe,,,,5.48
+adverb,often,,oft,,,,5.48
+noun,country,das,Land,Länder,,,5.47
+verb,to ask,,fragen,,fragte,hat gefragt,5.47
+preposition,next to,,neben,,,,5.47
+noun,square (town),der,Platz,Plätze,,,5.46
+verb,to take,,nehmen,,nahm,hat genommen,5.45
+adverb,especially,,besonders,,,,5.45
+noun,morning,der,Morgen,Morgen,,,5.43
+adjective,short,,kurz,,,,5.43
+adverb,tomorrow,,morgen,,,,5.43
+verb,to play,,spielen,,spielte,hat gespielt,5.42
+verb,to receive / get,,bekommen,,bekam,hat bekommen,5.42
+noun,family,die,Familie,Familien,,,5.41
+noun,house,das,Haus,Häuser,,,5.41
+noun,picture,das,Bild,Bilder,,,5.4
+verb,to work,,arbeiten,,arbeitete,hat gearbeitet,5.4
+adjective,possible,,möglich,,,,5.4
+adjective,far,,weit,,,,5.4
+conjunction,therefore,,deshalb,,,,5.39
+noun,week,die,Woche,Wochen,,,5.38
+noun,problem,das,Problem,Probleme,,,5.37
+noun,reason,der,Grund,Gründe,,,5.37
+verb,to stay,,bleiben,,blieb,ist geblieben,5.37
+noun,night,die,Nacht,Nächte,,,5.36
+adjective,new,,neu,,,,5.36
+noun,example,das,Beispiel,Beispiele,,,5.35
+noun,school,die,Schule,Schulen,,,5.34
+verb,to hold,,halten,,hielt,hat gehalten,5.34
+verb,to eat,,essen,,aß,hat gegessen,5.33
+adjective,long,,lang,,,,5.33
+noun,water,das,Wasser,,,,5.32
+noun,evening,der,Abend,Abende,,,5.32
+noun,music,die,Musik,,,,5.32
+preposition,behind,,hinter,,,,5.32
+noun,boy,der,Junge,Jungen,,,5.31
+adverb,soon,,bald,,,,5.31
+noun,car,das,Auto,Autos,,,5.3
+noun,head,der,Kopf,Köpfe,,,5.3
+noun,hand,die,Hand,Hände,,,5.3
+verb,to bring,,bringen,,brachte,hat gebracht,5.3
+verb,to show,,zeigen,,zeigte,hat gezeigt,5.29
+adjective,heavy,,schwer,,,,5.29
+adjective,important,,wichtig,,,,5.29
+noun,society,die,Gesellschaft,Gesellschaften,,,5.28
+adjective,high,,hoch,,,,5.28
+adjective,strong,,stark,,,,5.28
+noun,child,das,Kind,Kinder,,,5.27
+noun,street,die,Straße,Straßen,,,5.27
+noun,beginning,der,Anfang,Anfänge,,,5.27
+noun,mother,die,Mutter,Mütter,,,5.26
+adjective,known,,bekannt,,,,5.26
+noun,meeting,das,Treffen,Treffen,,,5.25
+verb,to write,,schreiben,,schrieb,hat geschrieben,5.25
+verb,to meet,,treffen,,traf,hat getroffen,5.25
+noun,help,die,Hilfe,,,,5.24
+noun,luck,das,Glück,,,,5.24
+adjective,light (not heavy),,leicht,,,,5.24
+noun,direction,die,Richtung,Richtungen,,,5.23
+noun,government,die,Regierung,Regierungen,,,5.23
+noun,film,der,Film,Filme,,,5.23
+verb,to think,,denken,,dachte,hat gedacht,5.23
+verb,to read,,lesen,,las,hat gelesen,5.23
+adjective,loud,,laut,,,,5.23
+noun,son,der,Sohn,Söhne,,,5.22
+noun,job (position),die,Stelle,Stellen,,,5.22
+noun,word,das,Wort,Wörter,,,5.22
+noun,book,das,Buch,Bücher,,,5.22
+noun,fun,der,Spaß,,,,5.22
+verb,to be allowed to,,dürfen,,durfte,hat gedurft,5.22
+noun,girl,das,Mädchen,Mädchen,,,5.21
+noun,father,der,Vater,Väter,,,5.21
+noun,person,der,Mensch,Menschen,,,5.21
+noun,future,die,Zukunft,,,,5.21
+adjective,big,,groß,,,,5.21
+noun,idea,die,Idee,Ideen,,,5.2
+verb,to lie (be lying),,liegen,,lag,hat gelegen,5.2
+verb,to drive / travel,,fahren,,fuhr,ist gefahren,5.2
+adjective,free (unoccupied),,frei,,,,5.2
+adverb,sometimes,,manchmal,,,,5.19
+noun,development,die,Entwicklung,Entwicklungen,,,5.18
+verb,to help,,helfen,,half,hat geholfen,5.18
+verb,to search,,suchen,,suchte,hat gesucht,5.18
+verb,to cost,,kosten,,kostete,hat gekostet,5.18
+adverb,quite,,ziemlich,,,,5.18
+conjunction,although,,obwohl,,,,5.18
+noun,success,der,Erfolg,Erfolge,,,5.17
+noun,fear,die,Angst,Ängste,,,5.17
+verb,to understand,,verstehen,,verstand,hat verstanden,5.17
+adjective,full,,voll,,,,5.17
+noun,price,der,Preis,Preise,,,5.16
+noun,class (school),die,Klasse,Klassen,,,5.16
+verb,to need,,brauchen,,brauchte,hat gebraucht,5.16
+adjective,old,,alt,,,,5.16
+verb,to forget,,vergessen,,vergaß,hat vergessen,5.15
+adverb,yesterday,,gestern,,,,5.15
+noun,name,der,Name,Namen,,,5.14
+noun,opinion,die,Meinung,Meinungen,,,5.14
+verb,to learn,,lernen,,lernte,hat gelernt,5.14
+verb,to buy,,kaufen,,kaufte,hat gekauft,5.14
+noun,moment,der,Moment,Momente,,,5.13
+verb,to speak,,sprechen,,sprach,hat gesprochen,5.13
+adjective,bad,,schlecht,,,,5.13
+verb,to believe,,glauben,,glaubte,hat geglaubt,5.12
+adverb,probably,,wahrscheinlich,,,,5.12
+noun,friend (male),der,Freund,Freunde,,,5.11
+noun,possibility,die,Möglichkeit,Möglichkeiten,,,5.09
+verb,to hear,,hören,,hörte,hat gehört,5.09
+noun,daughter,die,Tochter,Töchter,,,5.08
+noun,flat,die,Wohnung,Wohnungen,,,5.08
+noun,hour,die,Stunde,Stunden,,,5.08
+noun,summer,der,Sommer,Sommer,,,5.08
+noun,number,die,Zahl,Zahlen,,,5.08
+noun,employee,der,Mitarbeiter,Mitarbeiter,,,5.07
+noun,language,die,Sprache,Sprachen,,,5.07
+verb,to know (a person),,kennen,,kannte,hat gekannt,5.07
+noun,bathroom,das,Bad,Bäder,,,5.06
+noun,safety,die,Sicherheit,,,,5.06
+noun,mistake,der,Fehler,Fehler,,,5.06
+adjective,slow,,langsam,,,,5.06
+interjection,hello,,Hallo,,,,5.06
+verb,to run,,laufen,,lief,ist gelaufen,5.05
+verb,to pull,,ziehen,,zog,hat gezogen,5.05
+adverb,everywhere,,überall,,,,5.05
+noun,answer,die,Antwort,Antworten,,,5.04
+noun,face,das,Gesicht,Gesichter,,,5.04
+verb,to carry / wear,,tragen,,trug,hat getragen,5.04
+verb,to try,,versuchen,,versuchte,hat versucht,5.04
+noun,decision,die,Entscheidung,Entscheidungen,,,5.03
+noun,heart,das,Herz,Herzen,,,5.03
+noun,solution,die,Lösung,Lösungen,,,5.02
+noun,culture,die,Kultur,Kulturen,,,5.02
+adjective,wrong,,falsch,,,,5.02
+adjective,ready,,fertig,,,,5.02
+noun,brother,der,Bruder,Brüder,,,5.01
+noun,floor,der,Boden,Böden,,,5.01
+noun,economy,die,Wirtschaft,,,,5.01
+noun,situation,die,Situation,Situationen,,,5.01
+verb,to wait,,warten,,wartete,hat gewartet,5.01
+noun,company,die,Firma,Firmen,,,5.0
+noun,body,der,Körper,Körper,,,5.0
+verb,to win,,gewinnen,,gewann,hat gewonnen,5.0
+noun,friend (female),die,Freundin,Freundinnen,,,4.99
+noun,market,der,Markt,Märkte,,,4.99
+noun,month,der,Monat,Monate,,,4.99
+noun,result,das,Ergebnis,Ergebnisse,,,4.99
+noun,training,die,Ausbildung,Ausbildungen,,,4.99
+adjective,open,,offen,,,,4.99
+noun,newspaper,die,Zeitung,Zeitungen,,,4.98
+noun,meaning,die,Bedeutung,Bedeutungen,,,4.98
+noun,connection,die,Verbindung,Verbindungen,,,4.98
+noun,room,das,Zimmer,Zimmer,,,4.97
+noun,experience,die,Erfahrung,Erfahrungen,,,4.97
+verb,to explain,,erklären,,erklärte,hat erklärt,4.97
+noun,weekend,das,Wochenende,Wochenenden,,,4.96
+verb,to fall,,fallen,,fiel,ist gefallen,4.95
+noun,bed,das,Bett,Betten,,,4.94
+noun,truth,die,Wahrheit,Wahrheiten,,,4.94
+noun,nature,die,Natur,,,,4.94
+adjective,small,,klein,,,,4.94
+noun,sentence,der,Satz,Sätze,,,4.93
+noun,team,die,Mannschaft,Mannschaften,,,4.93
+verb,to change,,ändern,,änderte,hat geändert,4.93
+adjective,rich,,reich,,,,4.93
+noun,teacher (male),der,Lehrer,Lehrer,,,4.92
+noun,boss,der,Chef,Chefs,,,4.92
+noun,task,die,Aufgabe,Aufgaben,,,4.92
+noun,train,der,Zug,Züge,,,4.91
+noun,hotel,das,Hotel,Hotels,,,4.91
+verb,to decide,,entscheiden,,entschied,hat entschieden,4.91
+adjective,early,,früh,,,,4.91
+noun,door,die,Tür,Türen,,,4.9
+noun,journey,die,Reise,Reisen,,,4.9
+noun,university,die,Universität,Universitäten,,,4.9
+noun,movement,die,Bewegung,Bewegungen,,,4.9
+verb,to sit,,sitzen,,saß,hat gesessen,4.9
+adjective,happy,,glücklich,,,,4.89
+noun,window,das,Fenster,Fenster,,,4.88
+noun,freedom,die,Freiheit,Freiheiten,,,4.88
+noun,contract,der,Vertrag,Verträge,,,4.87
+verb,to love,,lieben,,liebte,hat geliebt,4.87
+noun,doctor,der,Arzt,Ärzte,,,4.86
+noun,dog,der,Hund,Hunde,,,4.86
+noun,sun,die,Sonne,Sonnen,,,4.85
+noun,coffee,der,Kaffee,Kaffees,,,4.84
+noun,winter,der,Winter,Winter,,,4.84
+noun,mobile phone,das,Handy,Handys,,,4.84
+noun,study (course),das,Studium,Studien,,,4.84
+noun,difference,der,Unterschied,Unterschiede,,,4.84
+verb,to sell,,verkaufen,,verkaufte,hat verkauft,4.84
+adjective,funny,,lustig,,,,4.84
+noun,table,der,Tisch,Tische,,,4.83
+noun,holiday,der,Urlaub,Urlaube,,,4.83
+noun,technology,die,Technik,Techniken,,,4.83
+verb,to be called,,heißen,,hieß,hat geheißen,4.83
+noun,beer,das,Bier,Biere,,,4.82
+noun,eye,das,Auge,Augen,,,4.82
+verb,to sleep,,schlafen,,schlief,hat geschlafen,4.82
+noun,energy,die,Energie,Energien,,,4.81
+noun,forest,der,Wald,Wälder,,,4.81
+noun,foot,der,Fuß,Füße,,,4.81
+verb,to answer,,antworten,,antwortete,hat geantwortet,4.81
+verb,to die,,sterben,,starb,ist gestorben,4.81
+adjective,late,,spät,,,,4.81
+noun,party,die,Party,Partys,,,4.8
+noun,message,die,Nachricht,Nachrichten,,,4.8
+noun,quality,die,Qualität,Qualitäten,,,4.8
+verb,to lose,,verlieren,,verlor,hat verloren,4.8
+adjective,interesting,,interessant,,,,4.8
+adjective,busy,,beschäftigt,,,,4.8
+noun,minute,die,Minute,Minuten,,,4.79
+noun,relationship,die,Beziehung,Beziehungen,,,4.79
+verb,to happen,,passieren,,passierte,ist passiert,4.78
+noun,sister,die,Schwester,Schwestern,,,4.77
+noun,birthday,der,Geburtstag,Geburtstage,,,4.77
+verb,to wish,,wünschen,,wünschte,hat gewünscht,4.77
+noun,telephone,das,Telefon,Telefone,,,4.76
+noun,weather,das,Wetter,,,,4.76
+noun,fire,das,Feuer,Feuer,,,4.76
+verb,to drink,,trinken,,trank,hat getrunken,4.76
+verb,to pay,,bezahlen,,bezahlte,hat bezahlt,4.76
+verb,to laugh,,lachen,,lachte,hat gelacht,4.76
+adjective,stupid,,dumm,,,,4.76
+adjective,calm,,ruhig,,,,4.76
+noun,airport,der,Flughafen,Flughäfen,,,4.75
+noun,hospital,das,Krankenhaus,Krankenhäuser,,,4.75
+noun,mouth,der,Mund,Münder,,,4.75
+adjective,free (no cost),,kostenlos,,,,4.75
+noun,village,das,Dorf,Dörfer,,,4.74
+noun,autumn,der,Herbst,Herbste,,,4.74
+noun,arm,der,Arm,Arme,,,4.74
+adjective,poor,,arm,,,,4.74
+noun,garden,der,Garten,Gärten,,,4.73
+noun,office,das,Büro,Büros,,,4.73
+noun,song,das,Lied,Lieder,,,4.73
+noun,colour,die,Farbe,Farben,,,4.73
+verb,to live (reside),,wohnen,,wohnte,hat gewohnt,4.73
+verb,to close,,schließen,,schloss,hat geschlossen,4.73
+noun,bus,der,Bus,Busse,,,4.72
+noun,park,der,Park,Parks,,,4.72
+noun,sea,das,Meer,Meere,,,4.72
+adjective,closed,,geschlossen,,,,4.72
+noun,museum,das,Museum,Museen,,,4.71
+noun,letter,der,Brief,Briefe,,,4.71
+verb,to like (to),,mögen,,mochte,hat gemocht,4.7
+verb,to send,,schicken,,schickte,hat geschickt,4.7
+adjective,young,,jung,,,,4.7
+adjective,nice,,nett,,,,4.7
+noun,shop,das,Geschäft,Geschäfte,,,4.69
+noun,opportunity,die,Gelegenheit,Gelegenheiten,,,4.69
+noun,explanation,die,Erklärung,Erklärungen,,,4.69
+noun,exhibition,die,Ausstellung,Ausstellungen,,,4.69
+noun,centre,das,Zentrum,Zentren,,,4.69
+noun,wind,der,Wind,Winde,,,4.69
+noun,peace,der,Frieden,,,,4.69
+verb,to begin,,beginnen,,begann,hat begonnen,4.69
+adjective,difficult,,schwierig,,,,4.69
+adjective,ill,,krank,,,,4.69
+noun,wall,die,Wand,Wände,,,4.68
+noun,health,die,Gesundheit,,,,4.68
+verb,to travel,,reisen,,reiste,ist gereist,4.68
+noun,kitchen,die,Küche,Küchen,,,4.67
+noun,train station,der,Bahnhof,Bahnhöfe,,,4.67
+verb,to visit,,besuchen,,besuchte,hat besucht,4.67
+verb,to use,,benutzen,,benutzte,hat benutzt,4.67
+noun,meat,das,Fleisch,,,,4.66
+noun,profession,der,Beruf,Berufe,,,4.66
+noun,computer,der,Computer,Computer,,,4.66
+verb,to fly,,fliegen,,flog,ist geflogen,4.66
+verb,to start (separable),,anfangen,,fing an,hat angefangen,4.66
+noun,wine,der,Wein,Weine,,,4.64
+adjective,sad,,traurig,,,,4.64
+noun,cinema,das,Kino,Kinos,,,4.63
+noun,information,die,Information,Informationen,,,4.63
+noun,exam,die,Prüfung,Prüfungen,,,4.63
+noun,tradition,die,Tradition,Traditionen,,,4.63
+noun,rain,der,Regen,,,,4.63
+noun,environment,die,Umwelt,,,,4.63
+noun,field,das,Feld,Felder,,,4.63
+noun,nose,die,Nase,Nasen,,,4.63
+verb,to open,,öffnen,,öffnete,hat geöffnet,4.63
+noun,mountain,der,Berg,Berge,,,4.62
+noun,tree,der,Baum,Bäume,,,4.62
+noun,bill,die,Rechnung,Rechnungen,,,4.61
+noun,glass,das,Glas,Gläser,,,4.61
+noun,bridge,die,Brücke,Brücken,,,4.61
+noun,animal,das,Tier,Tiere,,,4.61
+adjective,hot,,heiß,,,,4.61
+noun,appointment,der,Termin,Termine,,,4.6
+verb,to climb / rise,,steigen,,stieg,ist gestiegen,4.6
+adjective,empty,,leer,,,,4.6
+adjective,dangerous,,gefährlich,,,,4.6
+noun,guest,der,Gast,Gäste,,,4.59
+noun,illness,die,Krankheit,Krankheiten,,,4.59
+adjective,fresh,,frisch,,,,4.58
+noun,roof,das,Dach,Dächer,,,4.57
+adjective,expensive,,teuer,,,,4.57
+noun,address,die,Adresse,Adressen,,,4.56
+verb,to sing,,singen,,sang,hat gesungen,4.56
+adjective,cold,,kalt,,,,4.56
+adjective,healthy,,gesund,,,,4.56
+noun,present,das,Geschenk,Geschenke,,,4.55
+noun,temperature,die,Temperatur,Temperaturen,,,4.55
+adjective,near,,nah,,,,4.55
+noun,product,das,Produkt,Produkte,,,4.54
+noun,machine,die,Maschine,Maschinen,,,4.54
+noun,restaurant,das,Restaurant,Restaurants,,,4.53
+noun,bag,die,Tasche,Taschen,,,4.52
+verb,to cook,,kochen,,kochte,hat gekocht,4.52
+verb,to stop,,aufhören,,hörte auf,hat aufgehört,4.52
+verb,to call out,,rufen,,rief,hat gerufen,4.52
+noun,milk,die,Milch,,,,4.51
+adjective,warm,,warm,,,,4.51
+noun,bread,das,Brot,Brote,,,4.5
+noun,breakfast,das,Frühstück,Frühstücke,,,4.5
+adjective,tired,,müde,,,,4.5
+noun,knife,das,Messer,Messer,,,4.49
+noun,cat,die,Katze,Katzen,,,4.49
+noun,cake,der,Kuchen,Kuchen,,,4.48
+noun,bicycle,das,Fahrrad,Fahrräder,,,4.48
+noun,speed,die,Geschwindigkeit,Geschwindigkeiten,,,4.48
+adjective,sweet,,süß,,,,4.48
+noun,station (stop),die,Station,Stationen,,,4.47
+noun,hunger,der,Hunger,,,,4.46
+noun,aeroplane,das,Flugzeug,Flugzeuge,,,4.46
+noun,landscape,die,Landschaft,Landschaften,,,4.46
+adjective,clean,,sauber,,,,4.46
+noun,tea,der,Tee,Tees,,,4.45
+noun,snow,der,Schnee,,,,4.45
+noun,bird,der,Vogel,Vögel,,,4.45
+adjective,quiet,,leise,,,,4.45
+noun,customer,der,Kunde,Kunden,,,4.44
+noun,river,der,Fluss,Flüsse,,,4.44
+noun,friendship,die,Freundschaft,Freundschaften,,,4.44
+noun,trousers,die,Hose,Hosen,,,4.44
+adjective,friendly,,freundlich,,,,4.44
+noun,sugar,der,Zucker,,,,4.43
+noun,horse,das,Pferd,Pferde,,,4.43
+adjective,weak,,schwach,,,,4.43
+adjective,dark,,dunkel,,,,4.43
+noun,key,der,Schlüssel,Schlüssel,,,4.42
+noun,egg,das,Ei,Eier,,,4.42
+noun,beauty,die,Schönheit,,,,4.42
+adjective,boring,,langweilig,,,,4.42
+noun,bottle,die,Flasche,Flaschen,,,4.41
+noun,reality,die,Wirklichkeit,,,,4.4
+noun,hair,das,Haar,Haare,,,4.4
+verb,to dance,,tanzen,,tanzte,hat getanzt,4.4
+noun,date,das,Datum,Daten,,,4.39
+noun,salary,das,Gehalt,Gehälter,,,4.38
+verb,to swim,,schwimmen,,schwamm,ist geschwommen,4.38
+noun,view,die,Aussicht,Aussichten,,,4.37
+noun,subject (school),das,Fach,Fächer,,,4.37
+noun,pain,der,Schmerz,Schmerzen,,,4.37
+noun,moon,der,Mond,Monde,,,4.35
+noun,ear,das,Ohr,Ohren,,,4.35
+noun,fish,der,Fisch,Fische,,,4.34
+noun,cheese,der,Käse,,,,4.33
+noun,nation,die,Nation,Nationen,,,4.33
+adjective,sour,,sauer,,,,4.33
+noun,leg,das,Bein,Beine,,,4.32
+verb,to cry,,weinen,,weinte,hat geweint,4.32
+noun,dress,das,Kleid,Kleider,,,4.3
+adjective,bright,,hell,,,,4.3
+noun,tourism,der,Tourismus,,,,4.29
+verb,to phone,,anrufen,,rief an,hat angerufen,4.29
+noun,chair,der,Stuhl,Stühle,,,4.28
+interjection,excuse me,,Entschuldigung,,,,4.28
+noun,ability,die,Fähigkeit,Fähigkeiten,,,4.26
+adjective,cheap,,billig,,,,4.26
+noun,spring,der,Frühling,Frühlinge,,,4.25
+noun,instrument,das,Instrument,Instrumente,,,4.25
+noun,argument,das,Argument,Argumente,,,4.25
+verb,to repeat,,wiederholen,,wiederholte,hat wiederholt,4.25
+noun,teacher (female),die,Lehrerin,Lehrerinnen,,,4.24
+noun,event,das,Ereignis,Ereignisse,,,4.24
+noun,jacket,die,Jacke,Jacken,,,4.24
+noun,exercise,die,Übung,Übungen,,,4.23
+verb,to get up,,aufstehen,,stand auf,ist aufgestanden,4.23
+verb,to wash,,waschen,,wusch,hat gewaschen,4.2
+noun,stairs,die,Treppe,Treppen,,,4.19
+noun,butter,die,Butter,,,,4.18
+adjective,angry,,wütend,,,,4.17
+noun,document,das,Dokument,Dokumente,,,4.16
+adjective,low,,niedrig,,,,4.15
+noun,cupboard,der,Schrank,Schränke,,,4.14
+noun,dinner,das,Abendessen,Abendessen,,,4.14
+noun,student (male),der,Student,Studenten,,,4.13
+noun,neighbour,der,Nachbar,Nachbarn,,,4.13
+noun,application,die,Bewerbung,Bewerbungen,,,4.12
+adjective,clever,,klug,,,,4.11
+noun,salad,der,Salat,Salate,,,4.1
+noun,plate,der,Teller,Teller,,,4.09
+verb,to arrive,,ankommen,,kam an,ist angekommen,4.09
+noun,tool,das,Werkzeug,Werkzeuge,,,4.07
+noun,shoe,der,Schuh,Schuhe,,,4.06
+noun,pharmacy,die,Apotheke,Apotheken,,,4.05
+noun,cow,die,Kuh,Kühe,,,4.04
+noun,coat,der,Mantel,Mäntel,,,4.04
+adjective,famous,,berühmt,,,,4.04
+noun,apple,der,Apfel,Äpfel,,,4.03
+noun,shirt,das,Hemd,Hemden,,,4.03
+adjective,ugly,,hässlich,,,,4.02
+noun,bread roll,das,Brötchen,Brötchen,,,4.01
+noun,CV,der,Lebenslauf,Lebensläufe,,,4.0
+noun,lamp,die,Lampe,Lampen,,,3.99
+noun,soup,die,Suppe,Suppen,,,3.99
+verb,to invite,,einladen,,lud ein,hat eingeladen,3.99
+adjective,lonely,,einsam,,,,3.97
+interjection,goodbye,,Tschüss,,,,3.96
+noun,flower,die,Blume,Blumen,,,3.94
+adjective,cool,,kühl,,,,3.93
+noun,public holiday,der,Feiertag,Feiertage,,,3.87
+noun,spoon,der,Löffel,Löffel,,,3.8
+adjective,hungry,,hungrig,,,,3.77
+noun,thirst,der,Durst,,,,3.75
+noun,potato,die,Kartoffel,Kartoffeln,,,3.74
+adjective,dirty,,schmutzig,,,,3.7
+noun,cold (illness),die,Erkältung,Erkältungen,,,3.68
+noun,banana,die,Banane,Bananen,,,3.66
+noun,difficulty,die,Schwierigkeit,Schwierigkeiten,,,3.65
+noun,fork,die,Gabel,Gabeln,,,3.64
+noun,lesson,die,Lektion,Lektionen,,,3.64
+noun,ticket,die,Fahrkarte,Fahrkarten,,,3.38
+verb,to depart,,abfahren,,fuhr ab,ist abgefahren,3.28
+adjective,thirsty,,durstig,,,,3.06
