@@ -10,3 +10,6 @@ venv/
 # Personal progress written by the app (created on first run)
 user_data/*
 !user_data/.gitkeep
+
+# NiceGUI per-user storage (dark-mode preference)
+.nicegui/

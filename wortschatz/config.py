@@ -1,4 +1,4 @@
-"""Paths, schema and tunable constants. Nothing here imports Streamlit."""
+"""Paths, schema and constants. Nothing here imports a UI framework."""
 from __future__ import annotations
 
 import os
@@ -6,12 +6,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 WORDLIST_DIR = ROOT / "data" / "wordlists"          # bundled, read-only word lists
-# Everything the app writes lives here. Overridable so tests and CI never touch real progress.
+# Everything the game writes lives here. Overridable so tests and CI never touch real progress.
 USER_DIR = Path(os.environ.get("WORTSCHATZ_USER_DIR", ROOT / "user_data"))
 
 PROFILE_ME = "me"
 PROFILE_DEMO = "demo"
-PROFILE_LABELS = {PROFILE_ME: "My progress", PROFILE_DEMO: "Demo data (synthetic)"}
+PROFILE_LABELS = {PROFILE_ME: "My diary", PROFILE_DEMO: "Demo data"}
 DEFAULT_WORDLIST = "german_core"
 
 
@@ -19,15 +19,19 @@ def profile_dir(profile: str) -> Path:
     return Path(USER_DIR) / profile
 
 
-def events_path(profile: str) -> Path:
-    return profile_dir(profile) / "events.csv"
+def progress_path(profile: str) -> Path:
+    return profile_dir(profile) / "progress.csv"
+
+
+def attempts_path(profile: str) -> Path:
+    return profile_dir(profile) / "attempts.csv"
 
 
 def uploads_dir() -> Path:
-    return Path(USER_DIR) / "wordlists"
+    return Path(USER_DIR) / "wordlists"          # uploaded lists are shared by all profiles
 
 
-# ----------------------------------------------------------------------------- vocabulary schema
+# ----------------------------------------------------------------------------- word-list schema
 SUPPORTED_EXTENSIONS = (".csv", ".xlsx")
 TEXT_COLUMNS = ["word_class", "english", "article", "german", "plural", "past_tense", "perfect_tense"]
 WORD_COLUMNS = TEXT_COLUMNS + ["zipf"]
@@ -53,24 +57,16 @@ MISSING_MARKERS = {"", "-", "–", "—", "nan", "none", "n/a", "null"}
 FREQ_BANDS = [(5.4, "Very common"), (4.8, "Common"), (4.3, "Less common"), (-1.0, "Rare")]
 FREQ_BAND_ORDER = ["Very common", "Common", "Less common", "Rare", "Unknown"]
 
-# ----------------------------------------------------------------------------- learning model
-# Leitner boxes: a word in box b is due again INTERVAL_DAYS[b] days after it was last answered.
-INTERVAL_DAYS = {1: 0.25, 2: 1.0, 3: 3.0, 4: 6.0, 5: 12.0}
-MAX_BOX = 5
-MASTERED_BOX = 5
-WRONG_BOX_DROP = 2           # a wrong answer drops a word two boxes (never below box 1)
-NEW_WORD_RATIO = 0.35        # share of a "smart" session reserved for unseen words
-BACKLOG_NEW_WORD_RATIO = 0.1 # ...reduced to this while a full session's worth of reviews is already overdue
+# ----------------------------------------------------------------------------- game rules
+STATUS_DIARY = "diary"
+STATUS_SECOND = "second_chance"
 
-# ----------------------------------------------------------------------------- gamification
-DEFAULT_DAILY_GOAL = 20      # answers per day
-XP_CORRECT = 10
-XP_FAST_BONUS = 5            # correct answer given within FAST_MS
-FAST_MS = 4000
-LEVEL_XP_STEP = 150          # level L is reached at LEVEL_XP_STEP * (L - 1)^2 XP
-LEVEL_TITLES = ["Anfänger", "Entdecker", "Wortsammler", "Sprachschüler", "Wortschmied",
-                "Satzbauer", "Redner", "Kenner", "Meister", "Wortzauberer"]
+DIRECTIONS = {"de_en": "German → English", "en_de": "English → German"}
+DEFAULT_COUNT = 10
+MIN_COUNT = 3
+MAX_COUNT = 50
 
-# ----------------------------------------------------------------------------- analytics thresholds
-MIN_N_FOR_INSIGHT = 12       # smallest group an auto-generated insight may talk about
-WEAK_ACCURACY = 0.7
+PHASE_LEARN = "learn"        # first test of a freshly learned word
+PHASE_RETEST = "retest"      # test of a word from the second-chance list
+PHASE_DIARY = "diary"        # revision test of a diary word
+PHASE_REMOVED = "removed"    # a word deleted from the diary (logged so the history stays consistent)
