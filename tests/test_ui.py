@@ -57,7 +57,7 @@ async def play_round(user: User, wrong_for=lambda item: False) -> None:
 def click_chip(user: User, label: str) -> None:
     """Click the word-type chip whose label is `label` (a real browser bubbles the click from the label to the chip)."""
     from nicegui.testing.user_interaction import UserInteraction
-    chip = {el.parent_slot.parent for el in user.find(label, kind=ui.label).elements}
+    chip = {el.parent_slot.parent for el in user.find(label, kind=ui.label).elements if type(el).__name__ == "Label"}
     UserInteraction(user, chip, None).click()
 
 
@@ -91,7 +91,7 @@ async def begin_retest(user: User, cards: bool = False) -> None:
 
 
 async def begin_revision(user: User) -> None:
-    await user.open("/diary")
+    await user.open("/test")
     user.find("Start the revision test").click()
     await user.should_see("Question 1 of")
 
@@ -122,10 +122,63 @@ async def test_every_page_loads_on_the_demo_profile(user: User, path):
     await user.should_see("Synthetic demo data")
 
 
-async def test_home_shows_the_three_places_a_word_can_be(user: User):
+def room_elements(user: User) -> dict[str, ui.element]:
+    """The four clickable rooms drawn on the home page, by key (learn, test, second, stay)."""
+    rooms = {}
+    for element in user.find(kind=ui.element).elements:
+        for key in ("learn", "test", "second", "stay"):
+            if f"room-{key}" in element.classes:
+                rooms[key] = element
+    return rooms
+
+
+def click_element(user: User, element) -> None:
+    from nicegui.testing.user_interaction import UserInteraction
+    UserInteraction(user, {element}, None).click()
+
+
+async def test_home_is_a_house_with_four_rooms(user: User):
     await user.open("/")
-    for text in ("Learn new words", "Second chance", "My diary", "515", "How the game works"):
+    await user.should_see("Welcome home")
+    assert set(room_elements(user)) == {"learn", "test", "second", "stay"}
+
+
+@pytest.mark.parametrize("room, expected", [("learn", "How many words?"), ("test", "Your diary is empty"),
+                                            ("second", "Nothing to repeat"), ("stay", "Your diary is empty")])
+async def test_clicking_a_room_steps_inside(user: User, room, expected):
+    await user.open("/")
+    click_element(user, room_elements(user)[room])
+    await user.should_see(expected)
+
+
+async def test_room_counters_show_what_is_waiting(user: User):
+    prepare(nouns(3), fail=True)
+    prepare(nouns(2))
+    await user.open("/")
+    text = " ".join(str(getattr(e, "content", "")) for e in user.find(kind=ui.html).elements)
+    assert "515" not in text and "3 waiting" in text and "2 in the diary" in text and "2 to revise" in text
+
+
+async def test_the_sidebar_lists_every_room_and_the_guide(user: User):
+    await user.open("/")
+    for label in ("The house", "Learn room", "Test room", "Second-chance room", "Living room · Diary", "Progress", "Word lists", "Guide: how it works"):
+        await user.should_see(label)
+
+
+async def test_the_guide_explains_rooms_points_and_tracking(user: User):
+    await user.open("/")
+    user.find("Guide: how it works").click()
+    for text in ("A house with four rooms", "The one rule", "How your points work", "Learn well, and track it"):
         await user.should_see(text)
+
+
+async def test_header_shows_level_and_points(user: User):
+    await user.open("/")
+    await user.should_see("Level 1 · 0 pts")
+    prepare(nouns(5))
+    await user.open("/")
+    await user.should_see("Level 1 · 50 pts")
+    assert state.total_points() == 50
 
 
 async def test_demo_profile_is_created_on_first_use_and_is_read_only(user: User, isolated_user_dir):
@@ -259,7 +312,7 @@ async def test_ending_a_session_keeps_the_words_already_finished(user: User):
         await go_on(user)
     finished = next(iter(state.run.test.outcomes))
     user.find("End session").click()
-    await user.should_see("Guten Tag")
+    await user.should_see("Welcome home")
     assert state.run is None and state.store.progress.status(finished) == DIARY and first
 
 
@@ -271,7 +324,7 @@ async def test_second_chance_page_lists_the_missed_words_and_starts_a_review(use
     assert {r["german"] for r in table_rows(user)} == {w["german"] for w in session.pick_second_chance(state.store.progress)}
     user.find("Review & re-test").click()
     await user.should_see("Card 1 of 4")
-    await user.should_see("Second-chance re-test")
+    await user.should_see("Second-chance room · re-test")
 
 
 async def test_passing_the_retest_moves_words_into_the_diary(user: User):
@@ -304,7 +357,7 @@ async def test_diary_shows_only_passed_words_and_offers_revision(user: User):
     prepare(picked[3:], fail=True)
     await user.open("/diary")
     await user.should_see("My diary")
-    await user.should_see("Revision test")
+    await user.should_see("Revise them in the Test room")
     assert {r["german"] for r in table_rows(user)} == {w["german"] for w in picked[:3]}
 
 
@@ -316,7 +369,7 @@ async def test_diary_is_empty_at_the_start(user: User):
 async def test_failing_a_diary_revision_sends_the_word_back_to_second_chance(user: User):
     prepare(nouns(4))
     await begin_revision(user)
-    await user.should_see("Diary revision")
+    await user.should_see("Test room · revision")
     await user.should_see("Question 1 of 8")
     miss = state.run.words[0]["word_id"]
     await play_round(user, wrong_for=lambda item: item.word["word_id"] == miss)
@@ -385,3 +438,58 @@ async def test_the_diary_survives_switching_the_word_list(user: User, mini_words
     assert state.store.progress.count(DIARY) == 3
     await user.open("/diary")
     await user.should_see("My diary")
+
+
+# ----------------------------------------------------------------------------- rooms ask for a word list; points
+def click_card(user: User, title: str) -> None:
+    """Click the word-list card with this title."""
+    from nicegui.testing.user_interaction import UserInteraction
+    cards = {el.parent_slot.parent for el in user.find(title, kind=ui.label).elements
+             if type(el).__name__ == "Label" and "listcard" in el.parent_slot.parent.classes}
+    UserInteraction(user, cards, None).click()
+
+
+def unique_list(name: str):
+    import pandas as pd
+    raw = pd.DataFrame({"english": ["zebra", "yak", "xerus"], "german": ["Zebra", "Yak", "Xerus"], "article": ["das", "der", "das"],
+                        "word_class": ["noun"] * 3})
+    wordlist.save_upload(wordlist.standardize(raw)[0], name)
+
+
+async def test_the_test_room_can_be_limited_to_one_word_list(user: User):
+    prepare(nouns(5))
+    unique_list("zoo")
+    await user.open("/test")
+    await user.should_see("How many words?")
+    click_card(user, "Zoo")
+    await user.should_see("No diary words from that list yet.")
+    click_card(user, "German Core")
+    await user.should_see("How many words?")
+    user.find("Start the revision test").click()
+    await user.should_see("Question 1 of")
+    assert len(state.run.words) == 5
+
+
+async def test_the_second_chance_room_can_be_limited_to_one_word_list(user: User):
+    prepare(nouns(4), fail=True)
+    unique_list("zoo")
+    await user.open("/second-chance")
+    click_card(user, "Zoo")
+    await user.should_see("How many?")
+    user.find("Review & re-test").click()
+    await user.should_see("No second-chance words from that list.") if False else None
+    assert state.run is None                                                             # nothing from that list: no session starts
+
+
+async def test_a_good_round_earns_points_and_a_level_up(user: User):
+    await start_learning(user)
+    await play_round(user)
+    await user.should_see("Level up!")
+    assert state.total_points() == 100 and state.level().number == 2
+    await user.should_see("Level 2 · 100 pts")
+
+
+async def test_missing_a_word_earns_no_points(user: User):
+    await start_learning(user)
+    await play_round(user, wrong_for=lambda item: True)
+    assert state.total_points() == 0

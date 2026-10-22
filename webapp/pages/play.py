@@ -1,7 +1,7 @@
 """Play: study cards, then the typed test, then the results. One page, three stages."""
 from nicegui import events, ui
 
-from wortschatz import answers, config
+from wortschatz import answers, config, points
 from wortschatz.session import Feedback
 
 from .. import components as C
@@ -11,9 +11,10 @@ from ..state import state
 PRAISE = ["Richtig!", "Genau!", "Sehr gut!", "Stimmt!", "Perfekt!"]
 SPECIAL = ["ä", "ö", "ü", "ß"]
 FIELD_LABELS = {"infinitive": "Infinitive", "past": "Präteritum", "perfect": "Perfekt"}
-NAV_FOR_MODE = {config.PHASE_LEARN: "learn", config.PHASE_RETEST: "second", config.PHASE_DIARY: "diary"}
-TITLES = {config.PHASE_LEARN: "Learning new words", config.PHASE_RETEST: "Second-chance re-test",
-          config.PHASE_DIARY: "Diary revision"}
+NAV_FOR_MODE = {config.PHASE_LEARN: "learn", config.PHASE_RETEST: "second", config.PHASE_DIARY: "test"}
+ROOM_VAR = {config.PHASE_LEARN: "--learn", config.PHASE_RETEST: "--second", config.PHASE_DIARY: "--test"}
+TITLES = {config.PHASE_LEARN: "Learn room · studying", config.PHASE_RETEST: "Second-chance room · re-test",
+          config.PHASE_DIARY: "Test room · revision"}
 
 
 def verdict(feedback: Feedback) -> tuple[str, str] | None:
@@ -35,7 +36,7 @@ def verdict(feedback: Feedback) -> tuple[str, str] | None:
 
 def play() -> None:
     run = state.run
-    with frame(NAV_FOR_MODE.get(run.mode, "learn") if run else "learn"):
+    with frame(NAV_FOR_MODE.get(run.mode, "learn") if run else "learn") as shell:
         if run is None:
             C.empty_state("sports_esports", "Nothing in progress", "Pick some words to learn, re-test or revise.", "Choose words", "/learn")
             return
@@ -139,10 +140,14 @@ def play() -> None:
             def submit() -> None:
                 values = [i.value or "" for i in inputs]
                 run.test.submit(tuple(values) if len(values) > 1 else values[0])
+                if run.test.feedback.word_done:
+                    shell.refresh()
                 view.refresh()
 
             def skip() -> None:
                 run.test.skip()
+                if run.test.feedback.word_done:
+                    shell.refresh()
                 view.refresh()
 
             for index, field in enumerate(inputs):
@@ -199,10 +204,18 @@ def play() -> None:
             passed, failed = res["passed"], res["failed"]
             total = len(passed) + len(failed)
             with ui.column().classes("w-full gap-4"):
+                earned = points.round_points(run.mode, len(passed))
+                before, after = points.level_for(state.points_before), state.level()
                 with ui.element("div").classes("hero w-full"):
                     ui.html(f'<h1>{len(passed)} of {total} words passed</h1>'
                             f'<p>{res["correct"]} of {res["answered"]} answers correct. '
-                            + ("Perfect round!" if not failed else "Words you missed are waiting in your second-chance list.") + '</p>')
+                            + ("Perfect round!" if not failed else "Words you missed are waiting in the second-chance room.") + '</p>'
+                            + (f'<p style="margin-top:.7rem"><span class="pointsburst">+{earned} points</span> '
+                               f'&nbsp; Level {after.number} · {after.title}</p>' if earned else ''), sanitize=False)
+                if after.number > before.number:
+                    with ui.row().classes("card-flat items-center gap-3 w-full").style("border-color:var(--brass);background:color-mix(in srgb, var(--brass) 12%, var(--surface))"):
+                        ui.icon("emoji_events", color="amber-9", size="2rem")
+                        ui.label(f"Level up! You are now level {after.number}: {after.title}.").classes("text-lg font-bold")
                 with ui.row().classes("w-full gap-4 items-start max-md:flex-wrap no-wrap"):
                     with ui.column().classes("card grow gap-2").style("flex:1"):
                         label = "In your diary" if run.mode != config.PHASE_DIARY else "Still in your diary"
@@ -224,9 +237,9 @@ def play() -> None:
                 with ui.row().classes("gap-3"):
                     counts = state.counts()
                     if run.mode == config.PHASE_LEARN:
-                        ui.button("Learn more words", icon="school", on_click=lambda: leave("/learn")).props("unelevated no-caps size=lg color=primary")
+                        ui.button("Back to the Learn room", icon="school", on_click=lambda: leave("/learn")).props("unelevated no-caps size=lg color=primary")
                     if counts["second"]:
-                        ui.button(f"Second chance ({counts['second']})", icon="replay", on_click=lambda: leave("/second-chance"), color=None).props("outline no-caps size=lg")
+                        ui.button(f"Second-chance room ({counts['second']})", icon="replay", on_click=lambda: leave("/second-chance"), color=None).props("outline no-caps size=lg")
                     ui.button("Open the diary", icon="menu_book", on_click=lambda: leave("/diary"), color=None).props("outline no-caps size=lg")
 
         # ------------------------------------------------------------------ the page
@@ -253,8 +266,9 @@ def play() -> None:
                 advance()
 
         ui.keyboard(on_key=on_key)
-        with ui.row().classes("w-full items-center justify-between"):
-            ui.label(TITLES[run.mode]).classes("text-3xl font-bold serif")
-            ui.button("End session", icon="close", on_click=lambda: leave("/")).props("flat no-caps color=grey-7").tooltip(
-                "Words you have finished are already saved.")
-        view()
+        with ui.column().classes("w-full gap-3").style(f"--room:var({ROOM_VAR[run.mode]})"):
+            with ui.row().classes("w-full items-center justify-between"):
+                ui.label(TITLES[run.mode]).classes("text-3xl font-bold serif")
+                ui.button("End session", icon="close", on_click=lambda: leave("/")).props("flat no-caps color=grey-7").tooltip(
+                    "Words you have finished are already saved.")
+            view()

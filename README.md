@@ -14,14 +14,29 @@ study the cards, take a typed test, and let the game sort every word for you:
      └──── study it again, take a re-test ──┘      a word you miss in a revision test goes back
 ```
 
-| Learn | Study cards (click to flip) |
-|---|---|
-| ![Choose what to learn](docs/learn.png) | ![A card](docs/card_front.png) |
-| **Typed test** | **Results: where each word went** |
-| ![Test](docs/test.png) | ![Results](docs/results.png) |
+The game is a **2D house with four rooms**. Click a room to step inside, choose a word list, then play.
 
-More: [flipped card](docs/card_back.png) · [feedback after an answer](docs/feedback.png) · [second-chance list](docs/second_chance.png) ·
-[diary](docs/diary.png) · [stats](docs/stats.png) · [home](docs/home.png) · [dark mode](docs/results_dark.png)
+![The house](docs/home.png)
+
+| Room | What you do there |
+|---|---|
+| **Learn room** | Study new words as cards, then take the typed test. Passed words go into the diary. |
+| **Second-chance room** | Words you missed wait here. Study them again and pass a re-test to send them to the diary. |
+| **Test room** | Revise the words in your diary. A word you miss goes back to the second-chance room. |
+| **Living room** | Your diary: every word you have proven, searchable and exportable. |
+
+A **burger menu** opens and closes the sidebar (rooms, progress, word lists, the Guide, the demo profile and dark mode). The **Guide** button
+explains how the game works, how points and levels work, and how to learn and track your progress.
+
+| Study cards (click to flip) | Typed test |
+|---|---|
+| ![A card](docs/card_front.png) | ![Test](docs/test.png) |
+| **Results: points and where each word went** | **The Guide** |
+| ![Results](docs/results.png) | ![Guide](docs/guide_points.png) |
+
+More: [Learn room](docs/learn.png) · [flipped card](docs/card_back.png) · [feedback after an answer](docs/feedback.png) · [Test room](docs/test_room.png) ·
+[second-chance room](docs/second_chance.png) · [diary](docs/diary.png) · [stats](docs/stats.png) · [sidebar closed](docs/home_sidebar_closed.png) ·
+[phone width](docs/home_mobile.png) · [dark mode](docs/results_dark.png)
 
 ## The rules
 
@@ -35,8 +50,16 @@ More: [flipped card](docs/card_back.png) · [feedback after an answer](docs/feed
    - passed → it goes into **My diary**
    - missed → it goes onto the **second-chance list**
 5. **Second chance.** Study the missed words again and take a **re-test**. Pass it and the word moves into the diary; miss it and it stays.
-6. **Revise.** Open the diary whenever you like and test yourself on its words. A word you miss goes **back to the second-chance list**,
+6. **Revise.** Go to the Test room whenever you like and test yourself on diary words. A word you miss goes **back to the second-chance list**,
    so the diary only ever holds words you currently know.
+
+In every room you first **choose the word list** (or all your words), so you can work through one list at a time.
+
+### Points and levels
+
+Points reward proof, not effort: **+10** for passing a new word first time, **+6** for rescuing a word from the second-chance room,
+**+4** for passing a diary revision, and **0** for a miss (never a penalty). Points are computed from the answer log, so they always match what
+happened. Levels get further apart as you go: *Anfänger*, *Entdecker*, *Wortsammler*, *Sprachschüler*, *Wortschmied*, *Satzbauer*, *Redner*, *Kenner*, *Meister*, *Wortzauberer*.
 
 Every move is saved the moment a word is finished, so closing the window never loses progress.
 
@@ -54,12 +77,12 @@ python main.py
 A browser tab opens at `http://localhost:8080` (if another program uses that port, the game picks the next free one and prints the address). On Windows you can also double-click `run.bat`; on macOS and Linux run `./run.sh`.
 Everything runs and stays on your own computer. Your diary is saved as plain CSV in `user_data/` (open it in Excel if you like).
 
-Click **Demo** in the top bar to explore the Stats page straight away: it shows a month of play by a *simulated* learner,
+Switch to **Demo** in the sidebar to explore the Stats page straight away: it shows a month of play by a *simulated* learner,
 separate from your own diary.
 
 ## Your own words
 
-Open **Word list**, drop in a `.csv` or `.xlsx` file and the game cleans it, shows what it changed, and lets you save it as a list to learn from.
+Open **Word lists** in the sidebar, drop in a `.csv` or `.xlsx` file and the game cleans it, shows what it changed, and lets you save it as a list to learn from.
 
 | Column | Required | Notes |
 |---|---|---|
@@ -99,24 +122,25 @@ The page also writes plain-language findings, and each one stays silent when its
 
 ```
 main.py                 start the app (NiceGUI)
-webapp/                 the interface: pages, flip cards, charts, theme (light and dark)
+webapp/                 the interface: the SVG house, rooms, flip cards, charts, theme (light and dark)
 wortschatz/             the game, with no UI code
   progress.py             THE RULES: where a word lives, in 6 transitions
   session.py              choosing words, study cards, the test engine
   answers.py              checking typed answers
   storage.py              progress.csv and attempts.csv (atomic writes)
   stats.py                the statistics
+  points.py               points and levels, derived from the answer log
   wordlist.py             reading, cleaning and validating CSV / Excel sheets
   demo.py                 the simulated learner behind the Demo profile
 data/wordlists/         the bundled word list
 tools/                  how the bundled list is built and checked
-tests/                  154 tests
+tests/                  198 tests
 ```
 
 The rules live in one small module ([`wortschatz/progress.py`](wortschatz/progress.py)) and are tested exhaustively:
 all six transitions, the counters, and an invariant that **the saved diary equals what replaying the answer log under the rules produces**.
 The interface is NiceGUI (a Python framework on Quasar/Vue), chosen over Streamlit for real control over the design: 3D flip cards, keyboard-driven tests,
-custom components and dark mode.
+custom components, an SVG house you can click through, and dark mode.
 
 ### The bundled word list
 
@@ -133,9 +157,9 @@ pip install -r requirements-dev.txt
 python -m pytest
 ```
 
-154 tests (about two minutes): the rules and every transition, answer checking, word selection, the test engine, saving and reloading, CSV/Excel cleaning,
+198 tests (about three minutes): the rules and every transition, answer checking, word selection, the test engine, saving and reloading, CSV/Excel cleaning,
 every statistic against hand-computed numbers (and on empty data), the demo simulator, and **end-to-end tests where a simulated browser plays the real app**
-(learn, miss a word, pass the re-test, fail a revision, quit half way, switch word lists, verbs with three form boxes). Tests use a temporary data folder
+(click a room, learn, miss a word, pass the re-test, fail a revision, earn points and a level, quit half way, switch word lists, verbs with three form boxes). Tests use a temporary data folder
 and never touch your diary.
 
 ## Limitations

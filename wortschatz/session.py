@@ -48,16 +48,22 @@ def pick_new_words(words: pd.DataFrame, progress: Progress, word_class: str | No
     return pool.head(count).to_dict("records")
 
 
-def pick_second_chance(progress: Progress, count: int | None = None, word_class: str | None = None) -> list[dict]:
+def _within(frame: pd.DataFrame, word_ids) -> pd.DataFrame:
+    """Keep only words that appear in the chosen word list (None = no restriction)."""
+    return frame if word_ids is None else frame[frame["word_id"].isin(set(word_ids))]
+
+
+def pick_second_chance(progress: Progress, count: int | None = None, word_class: str | None = None,
+                       word_ids=None) -> list[dict]:
     """Second-chance words, those missed most often (then longest ago) first."""
-    frame = _of_class(progress.frame(config.STATUS_SECOND), word_class)
+    frame = _within(_of_class(progress.frame(config.STATUS_SECOND), word_class), word_ids)
     frame = frame.sort_values(["fails", "last_tested"], ascending=[False, True], kind="stable")
     return frame.head(count).to_dict("records") if count else frame.to_dict("records")
 
 
 def pick_diary(progress: Progress, word_class: str | None, count: int, order: str = "stale",
-               rng: random.Random | None = None) -> list[dict]:
-    frame = _of_class(progress.frame(config.STATUS_DIARY), word_class)
+               rng: random.Random | None = None, word_ids=None) -> list[dict]:
+    frame = _within(_of_class(progress.frame(config.STATUS_DIARY), word_class), word_ids)
     if order == "random":
         frame = frame.iloc[random_order(len(frame), rng)]
     elif order == "newest":

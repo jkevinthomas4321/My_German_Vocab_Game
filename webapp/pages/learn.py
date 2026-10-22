@@ -1,3 +1,4 @@
+"""The Learn room: choose a word list, choose what to learn, then study the cards and take the test."""
 from nicegui import ui
 
 from wortschatz import config, session
@@ -17,20 +18,31 @@ def directions_from(choice: str) -> list[str]:
 
 def learn() -> None:
     with frame("learn"):
-        words, progress = state.words(), state.store.progress
+        progress = state.store.progress
+        C.room_banner("learn", "Learn room", "Pick a word list, choose what to study, study the cards, then prove it in the test.")
+        if state.is_demo:
+            C.empty_state("science", "The demo profile is read-only", "Switch to “My diary” in the menu to learn words.")
+            return
+
+        # ------------------------------------------------------------------ 1  the word list
+        def choose_list(name: str) -> None:
+            state.wordlist = name
+            ui.navigate.reload()
+
+        C.step_title(1, "Choose a word list")
+        options = []
+        for name in state.catalog():
+            words = state.words_of(name)
+            options.append((name, C.pretty(name), len(session.new_words(words, progress)), f"new words · {len(words)} in the list"))
+        C.list_cards("learn", options, state.list_name(), choose_list)
+
+        words = state.words()
         fresh = session.new_words(words, progress)
         counts = session.class_counts(fresh)
-
-        ui.label("Learn new words").classes("text-3xl font-bold serif")
-        ui.label("Choose what you want to learn today. You study the cards first, then take the test.").classes("muted")
-        if state.is_demo:
-            C.empty_state("science", "The demo profile is read-only", "Switch to “My diary” in the header to learn words.")
-            return
         if not counts:
             C.empty_state("celebration", "You have been tested on every word in this list",
-                          "Load another word list, or revise your diary.", "Open the diary", "/diary")
+                          "Choose another word list, or revise your diary in the Test room.", "Go to the Test room", "/test")
             return
-
         form = {"cls": next(iter(counts)), "count": min(config.DEFAULT_COUNT, counts[next(iter(counts))]),
                 "order": "frequency" if fresh["zipf"].notna().any() else "sheet", "dirs": "both"}
 
@@ -79,9 +91,9 @@ def learn() -> None:
             ui.navigate.to("/play")
 
         with ui.column().classes("card w-full gap-4"):
-            ui.label("1  What do you want to learn?").classes("text-lg font-bold")
+            C.step_title(2, "What do you want to learn?")
             picker()
             ui.separator()
-            ui.label("2  How much?").classes("text-lg font-bold")
+            C.step_title(3, "How much?")
             controls()
             ui.button("Start learning", icon="play_arrow", on_click=start).props("unelevated no-caps size=lg color=primary").classes("self-start")

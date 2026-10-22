@@ -8,6 +8,8 @@ from nicegui import ui
 
 from wortschatz import config
 
+from . import house
+
 FORM_LABELS = (("Präteritum", "past_tense"), ("Perfekt", "perfect_tense"))
 
 
@@ -84,3 +86,33 @@ def empty_state(icon: str, title: str, text: str, button: str | None = None, tar
         ui.label(text).classes("muted")
         if button and target:
             ui.button(button, on_click=lambda: ui.navigate.to(target)).props("unelevated no-caps color=primary")
+
+
+ROOM_COLORS = {"learn": "--learn", "test": "--test", "second": "--second", "stay": "--stay"}
+
+
+def room_banner(room: str, title: str, subtitle: str) -> None:
+    """The coloured banner at the top of a room, with its little illustration."""
+    with ui.element("div").classes("roombanner w-full").style(f"--room:var({ROOM_COLORS[room]})"):
+        ui.html(house.ROOM_ART[room](), sanitize=False).classes("art")
+        with ui.column().classes("gap-0"):
+            ui.html(f"<h1>{esc(title)}</h1><p>{esc(subtitle)}</p>", sanitize=False)
+
+
+def step_title(number: int, text: str) -> None:
+    ui.html(f'<div style="display:flex;align-items:center;font-size:1.15rem;font-weight:700"><span class="stepno">{number}</span>{esc(text)}</div>', sanitize=False)
+
+
+def list_cards(room: str, options: list[tuple], selected, on_select) -> None:
+    """Cards to choose a word list. options: (value, title, big number, caption)."""
+    with ui.row().classes("gap-3"):
+        for value, title, big, caption in options:
+            with ui.element("div").classes("listcard" + (" on" if value == selected else "")).style(f"--room:var({ROOM_COLORS[room]})").on(
+                    "click", lambda v=value: on_select(v)):
+                ui.label(title).classes("font-bold")
+                ui.label(str(big)).classes("big")
+                ui.label(caption).classes("muted text-sm")
+
+
+def pretty(name: str) -> str:
+    return name.replace("_", " ").title()

@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import pandas as pd
 
-from wortschatz import config, demo, session, wordlist
+from wortschatz import config, demo, points, session, stats, wordlist
 from wortschatz.session import CardDeck, TestRun
 from wortschatz.storage import Store
 
@@ -24,7 +24,7 @@ class Run:
     deck: CardDeck | None = None
     test: TestRun | None = None
     flipped: bool = False
-    front: str = "de"                 # which language is on the front of the cards: "de" or "en"
+    front: str = "de"                  # which language is on the front of the cards: "de" or "en"
 
     def begin_test(self) -> None:
         self.test = TestRun(state.store, self.words, self.directions)
@@ -37,6 +37,7 @@ class AppState:
         self.store = Store(self.profile)
         self.wordlist = config.DEFAULT_WORDLIST
         self.run: Run | None = None
+        self.points_before = 0
         self._lists: dict[tuple[str, float], pd.DataFrame] = {}
 
     # ------------------------------------------------------------------ word lists
@@ -50,18 +51,23 @@ class AppState:
         return config.DEFAULT_WORDLIST if config.DEFAULT_WORDLIST in names else next(iter(names), None)
 
     def load_list(self, name: str) -> tuple[pd.DataFrame, wordlist.ValidationReport]:
-        path = self.catalog()[name]
-        return wordlist.load_wordlist(path)
+        return wordlist.load_wordlist(self.catalog()[name])
 
-    def words(self) -> pd.DataFrame:
-        name = self.list_name()
-        if name is None:
-            return wordlist.empty_words()
+    def words_of(self, name: str) -> pd.DataFrame:
+        """The cleaned words of one list (cached until the file changes)."""
         path = self.catalog()[name]
         key = (str(path), path.stat().st_mtime)
         if key not in self._lists:
-            self._lists = {key: wordlist.load_wordlist(path)[0]}
+            self._lists[key] = wordlist.load_wordlist(path)[0]
         return self._lists[key]
+
+    def words(self) -> pd.DataFrame:
+        name = self.list_name()
+        return self.words_of(name) if name else wordlist.empty_words()
+
+    def list_ids(self, name: str | None) -> set[str] | None:
+        """word_ids of a list; None means 'no restriction' (all my words)."""
+        return None if name is None else set(self.words_of(name)["word_id"])
 
     # ------------------------------------------------------------------ profiles
     @property
@@ -77,8 +83,7 @@ class AppState:
 
     def ensure_demo(self, force: bool = False) -> None:
         """Create the synthetic demo profile, or refresh it when it has gone stale."""
-        store = Store(config.PROFILE_DEMO)
-        attempts = store.attempts()
+        attempts = Store(config.PROFILE_DEMO).attempts()
         fresh = len(attempts) and (pd.Timestamp.now() - attempts["ts"].max()) < DEMO_REFRESH_AFTER
         if fresh and not force:
             return
@@ -92,6 +97,7 @@ class AppState:
     def start(self, mode: str, words: list[dict], directions: list[str], cards: bool) -> Run:
         self.run = Run(mode=mode, words=words, directions=list(directions), stage="cards" if cards else "test",
                        deck=CardDeck(words) if cards else None)
+        self.points_before = self.total_points()
         if not cards:
             self.run.begin_test()
         return self.run
@@ -99,11 +105,20 @@ class AppState:
     def end_run(self) -> None:
         self.run = None
 
-    # ------------------------------------------------------------------ numbers for the header and home page
+    # ------------------------------------------------------------------ numbers for the sidebar, the house and the pages
     def counts(self) -> dict[str, int]:
         progress = self.store.progress
         return {"diary": progress.count(config.STATUS_DIARY), "second": progress.count(config.STATUS_SECOND),
                 "new": len(session.new_words(self.words(), progress))}
+
+    def total_points(self) -> int:
+        return points.total_points(stats.word_outcomes(self.store.attempts()))
+
+    def level(self) -> points.Level:
+        return points.level_for(self.total_points())
+
+    def points_today(self) -> int:
+        return points.points_on(stats.word_outcomes(self.store.attempts()), date.today())
 
 
 state = AppState()
