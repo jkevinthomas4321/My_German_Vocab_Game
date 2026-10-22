@@ -51,7 +51,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-A browser tab opens at `http://localhost:8080`. On Windows you can also double-click `run.bat`; on macOS and Linux run `./run.sh`.
+A browser tab opens at `http://localhost:8080` (if another program uses that port, the game picks the next free one and prints the address). On Windows you can also double-click `run.bat`; on macOS and Linux run `./run.sh`.
 Everything runs and stays on your own computer. Your diary is saved as plain CSV in `user_data/` (open it in Excel if you like).
 
 Click **Demo** in the top bar to explore the Stats page straight away: it shows a month of play by a *simulated* learner,
