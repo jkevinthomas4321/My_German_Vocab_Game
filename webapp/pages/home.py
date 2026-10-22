@@ -1,68 +1,67 @@
-"""The home page: a 2D drawing of a house with four rooms. Click a room to step inside."""
+"""The home page: a top-down map of the campus. Walk to a room (WASD or arrows, or click) and step on its pad to enter."""
+import json
+from pathlib import Path
+
 from nicegui import ui
 
 from wortschatz import stats
 
 from .. import components as C
-from .. import house
 from ..layout import frame
 from ..state import state
 
+SCRIPT = Path(__file__).resolve().parent.parent / "static" / "world.js"
 
-def room(key: str, title: str, subtitle: str, count: str, target: str, glow: bool = False) -> None:
-    """One clickable room of the house, drawn as an illustration with a name plaque and a counter."""
-    def enter() -> None:
-        ui.navigate.to(target)
+# (key, room colour, title, url): the four main rooms, also offered as plain buttons under the map
+DOORS = [("learn", "#5B8DBF", "Learn room", "/learn"),
+         ("test", "#44A08A", "Test room", "/test"),
+         ("second", "#CC7456", "Second-chance room", "/second-chance"),
+         ("stay", "#D1A24C", "Diary", "/diary")]
 
-    box = ui.element("div").classes(f"room room-{key}" + (" glow" if glow else "")).props(f'tabindex=0 role=button aria-label="Enter the {title}"')
-    box.on("click", enter)
-    box.on("keydown.enter", enter)
+MAP_HTML = """<div class="world-wrap">
+  <canvas id="world" aria-label="Top-down map of the campus"></canvas>
+  <div class="world-chip" id="world-room"><i></i><b>Corridor</b><span>you are here</span></div>
+  <div class="world-keys"><b>W</b><b>A</b><b>S</b><b>D</b> move <b>E</b> enter</div>
+  <div class="world-prompt" id="world-prompt"><kbd>E</kbd><span></span></div>
+</div>"""
+
+
+def door_chip(key: str, color: str, title: str, caption: str, target: str, glow: bool = False) -> None:
+    """A button version of a room: a shortcut, and a way in without the keyboard or a mouse-driven walk."""
+    box = ui.element("div").classes(f"doorchip room-{key}" + (" glow" if glow else "")).style(f"--room:{color}").props(
+        f'tabindex=0 role=button aria-label="Go to the {title}"')
+    box.on("click", lambda: ui.navigate.to(target))
+    box.on("keydown.enter", lambda: ui.navigate.to(target))
     with box:
-        ui.html(house.ROOM_ART[key](), sanitize=False)
-        ui.html(f'<div class="plaque"><div class="t">{C.esc(title)}</div><div class="s">{C.esc(subtitle)}</div></div>', sanitize=False)
-        ui.html(f'<div class="roomcount">{C.esc(count)}</div>', sanitize=False)
-        ui.html('<div class="roomenter">Enter →</div>', sanitize=False)
+        ui.element("i")
+        ui.html(f"<b>{C.esc(title)}</b> <span class='n'>{C.esc(caption)}</span>", sanitize=False)
 
 
 def home() -> None:
     with frame("home") as shell:
-        guide_dialog = shell.guide
         counts = state.counts()
         kpi = stats.kpis(state.store.progress, state.store.attempts())
         level = state.level()
+        captions = {"learn": f"{counts['new']} new", "test": f"{counts['diary']} to revise",
+                    "second": f"{counts['second']} waiting", "stay": f"{counts['diary']} words"}
+
+        world = {"badges": {**captions, "diary": captions["stay"], "progress": f"Level {level.number}", "library": f"{len(state.catalog())} list" + ("" if len(state.catalog()) == 1 else "s")},
+                 "urgent": ["second"] if counts["second"] else []}
+        ui.add_head_html(f"<script>window.WORTSCHATZ_WORLD = {json.dumps(world)};</script>")
+        ui.add_head_html(f'<script src="/static-wortschatz/world.js?v={int(SCRIPT.stat().st_mtime)}" defer></script>')
 
         with ui.column().classes("gap-0"):
-            ui.label("Welcome home").classes("text-3xl font-bold serif")
-            ui.label("Click a room to step inside. In every room you choose a word list first, then you play.").classes("muted")
+            ui.label("Walk to a room").classes("text-3xl font-bold serif")
+            ui.label("Move with WASD or the arrow keys, or click where you want to go. Step on a glowing pad to enter. "
+                     "In every room you choose a word list first.").classes("muted")
 
-        with ui.element("div").classes("scene"):
-            with ui.element("div").classes("sky"):
-                ui.element("div").classes("sun")
-                for name in ("c1", "c2", "c3"):
-                    ui.html(f'<div class="cloud {name}">{house.CLOUD}</div>', sanitize=False)
-            with ui.element("div").classes("roofwrap"):
-                ui.element("div").classes("chimney")
-                for name in ("s1", "s2", "s3"):
-                    ui.element("div").classes(f"smoke {name}")
-                ui.html(house.ROOF, sanitize=False)
-            with ui.element("div").classes("housebody"):
-                room("learn", "Learn room", "Study new words", f"{counts['new']} new", "/learn")
-                room("test", "Test room", "Revise your diary", f"{counts['diary']} to revise", "/test")
-                room("second", "Second-chance room", "Words to try again", f"{counts['second']} waiting", "/second-chance", glow=counts["second"] > 0)
-                room("stay", "Living room", "Where your words stay", f"{counts['diary']} in the diary", "/diary")
-            with ui.element("div").classes("ground"):
-                ui.element("div").classes("path")
-                ui.html(house.TREE, sanitize=False)
-                ui.html(house.BUSH, sanitize=False)
-                ui.html(house.BUSH.replace("deco-bush", "deco-bush b2"), sanitize=False)
-                with ui.element("div").classes("signpost"):
-                    ui.element("div").classes("post")
-                    with ui.element("div").classes("sign s1").on("click", guide_dialog.open):
-                        ui.label("Guide")
-                    with ui.element("div").classes("sign s2").on("click", lambda: ui.navigate.to("/stats")):
-                        ui.label("Progress")
-                ui.html(house.MAILBOX, sanitize=False).classes("mailbox").on("click", lambda: ui.navigate.to("/words")).tooltip("Word lists")
-            ui.label("Tip: the signpost opens the guide and your progress. The mailbox holds your word lists.").classes("hint")
+        ui.html(MAP_HTML, sanitize=False).classes("w-full")
+        ui.button(on_click=shell.guide.open).props("id=open-guide").style("display:none")
+
+        with ui.row().classes("doors items-center"):
+            ui.label("Or go straight to:").classes("muted text-sm")
+            for key, color, title, target in DOORS:
+                door_chip(key, color, title, captions[key], target, glow=key == "second" and counts["second"] > 0)
 
         C.tiles([("Level", f"{level.number}", f"{level.title} · {level.points} points"), ("Points today", f"+{state.points_today()}", "from words you proved"),
                  ("Streak", f"{kpi['streak']} d", f"best {kpi['best_streak']} d"), ("Words tested today", str(kpi["today_words"]), "")])

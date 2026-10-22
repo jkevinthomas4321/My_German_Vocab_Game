@@ -1,4 +1,4 @@
-"""The 2D drawing of the house: a roof, four illustrated rooms, and the garden.
+"""The side-view illustrations of the four rooms, shown on each room's banner.
 
 Everything is inline SVG built from plain strings (no image files), so it scales cleanly and follows the theme.
 Each room is drawn on a 300 x 170 canvas with the floor at y = 130; furniture sits on that line.
@@ -105,7 +105,7 @@ def second_chance_room() -> str:
             '</svg>')
 
 
-def living_room() -> str:
+def diary_room() -> str:
     return (HEAD + _room_shell("#F6EBD3", "#EBDDBE") +
             # picture frames
             f'<rect x="28" y="22" width="44" height="34" rx="2" fill="{BRASS}"/><rect x="32" y="26" width="36" height="26" fill="#DDE8D6"/><path d="M32 52 l10 -12 l8 8 l8 -10 l10 14Z" fill="#6E9A74"/>'
@@ -129,27 +129,4 @@ def living_room() -> str:
             '</svg>')
 
 
-ROOM_ART = {"learn": learn_room, "test": test_room, "second": second_chance_room, "stay": living_room}
-
-ROOF = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 170" preserveAspectRatio="none" class="roof">'
-        '<polygon points="10,170 500,12 990,170" fill="#7B2D3B"/>'
-        '<polygon points="10,170 500,12 990,170" fill="none" stroke="#4A1C25" stroke-width="6" stroke-linejoin="round"/>'
-        '<g stroke="#5E2230" stroke-width="2.2" opacity=".75" fill="none">'
-        '<path d="M64 150 L500 52 L936 150M118 128 L500 92 L882 128M172 106 L500 68 L828 106M226 84 L500 30 L774 84"/></g>'
-        '<circle cx="500" cy="98" r="22" fill="#FFFDF8" stroke="#B8893A" stroke-width="6"/>'
-        '<path d="M500 80V116M482 98H518" stroke="#B8893A" stroke-width="3"/></svg>')
-
-TREE = ('<svg viewBox="0 0 120 150" class="deco-tree" xmlns="http://www.w3.org/2000/svg"><rect x="54" y="84" width="14" height="62" fill="#6B4F2F"/>'
-        '<circle cx="60" cy="56" r="42" fill="#5E8F62"/><circle cx="36" cy="72" r="28" fill="#6FA070"/><circle cx="86" cy="70" r="30" fill="#4E7D54"/>'
-        '<circle cx="58" cy="38" r="22" fill="#7DB07C" opacity=".8"/></svg>')
-
-BUSH = ('<svg viewBox="0 0 120 50" class="deco-bush" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="22" fill="#5E8F62"/>'
-        '<circle cx="62" cy="26" r="26" fill="#4E7D54"/><circle cx="94" cy="32" r="20" fill="#6FA070"/>'
-        '<circle cx="44" cy="22" r="3" fill="#E7B1B8"/><circle cx="76" cy="18" r="3" fill="#E7B1B8"/><circle cx="100" cy="28" r="3" fill="#F2D488"/></svg>')
-
-MAILBOX = ('<svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg"><rect x="36" y="54" width="8" height="64" fill="#6B4F2F"/>'
-           '<path d="M10 54 V34 a30 22 0 0 1 60 0 V54Z" fill="#2C3E5C"/><rect x="10" y="50" width="60" height="6" fill="#1B2A41"/>'
-           '<rect x="62" y="22" width="5" height="30" fill="#7B2D3B"/><rect x="62" y="22" width="16" height="9" rx="1" fill="#7B2D3B"/>'
-           '<rect x="22" y="38" width="30" height="5" rx="1" fill="#B8893A"/></svg>')
-
-CLOUD = '<svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg"><path d="M20 52 a18 18 0 0 1 4 -35 a26 26 0 0 1 50 -6 a22 22 0 0 1 36 12 a16 16 0 0 1 28 18 a14 14 0 0 1 -6 11Z" fill="currentColor"/></svg>'
+ROOM_ART = {"learn": learn_room, "test": test_room, "second": second_chance_room, "stay": diary_room}

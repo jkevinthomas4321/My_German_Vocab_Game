@@ -105,7 +105,7 @@ class AppState:
     def end_run(self) -> None:
         self.run = None
 
-    # ------------------------------------------------------------------ numbers for the sidebar, the house and the pages
+    # ------------------------------------------------------------------ numbers for the sidebar, the map and the pages
     def counts(self) -> dict[str, int]:
         progress = self.store.progress
         return {"diary": progress.count(config.STATUS_DIARY), "second": progress.count(config.STATUS_SECOND),

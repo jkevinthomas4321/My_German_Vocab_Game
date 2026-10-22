@@ -1,5 +1,7 @@
 """The URL of every page. `register()` is called by main.py each time the app starts."""
-from nicegui import ui
+from pathlib import Path
+
+from nicegui import app, ui
 
 from .pages import diary, home, learn, play, second_chance, stats_page, testroom, words
 
@@ -15,6 +17,10 @@ ROUTES = {
 }
 
 
+STATIC = Path(__file__).resolve().parent / "static"
+
+
 def register() -> None:
+    app.add_static_files("/static-wortschatz", STATIC)
     for path, page in ROUTES.items():
         ui.page(path)(page)

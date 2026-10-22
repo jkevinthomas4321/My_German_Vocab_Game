@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-BLUE, ORANGE, GREEN, GOLD, MUTED = "#35506B", "#A4553D", "#2F5D50", "#B8893A", "#8A8576"   # the house palette: slate, terracotta, pine, brass
+BLUE, ORANGE, GREEN, GOLD, MUTED = "#35506B", "#A4553D", "#2F5D50", "#B8893A", "#8A8576"   # the app palette: slate, terracotta, pine, brass
 _AXIS = {"axisLabel": {"color": MUTED}, "axisLine": {"lineStyle": {"color": "#D8D2C6"}},
          "splitLine": {"lineStyle": {"color": "rgba(150,150,150,.18)"}}}
 _BASE = {"animationDuration": 500, "backgroundColor": "transparent", "textStyle": {"color": MUTED},

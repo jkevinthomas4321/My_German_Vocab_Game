@@ -1,4 +1,4 @@
-"""The Living room: your diary, the words that stay with you."""
+"""The Diary: your personal room, where the words you have proven stay."""
 from nicegui import ui
 
 from wortschatz import config, session, wordlist
@@ -17,7 +17,7 @@ def diary() -> None:
     with frame("diary"):
         progress = state.store.progress
         diary_frame = progress.frame(config.STATUS_DIARY)
-        C.room_banner("stay", "Living room", "Your diary: only words you have passed live here. Revise them in the Test room.")
+        C.room_banner("stay", "Diary", "Your personal room: only words you have passed live here. Revise them in the Test room.")
         if diary_frame.empty:
             C.empty_state("menu_book", "Your diary is empty", "Learn some words and pass the test to fill it.", "Go to the Learn room", "/learn")
             return

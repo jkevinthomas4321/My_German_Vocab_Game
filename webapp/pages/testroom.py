@@ -12,7 +12,7 @@ from .second_chance import source_options
 
 def test_room() -> None:
     with frame("test"):
-        C.room_banner("test", "Test room", "Revise the words in your diary. Miss one and it goes back to the second-chance room.")
+        C.room_banner("test", "Test room", "Revision: test yourself on the words in your diary. Miss one and it goes back to the second-chance room.")
         diary = state.store.progress.frame(config.STATUS_DIARY)
         if diary.empty:
             C.empty_state("menu_book", "Your diary is empty", "Learn some words and pass the test, then come back to revise them.",

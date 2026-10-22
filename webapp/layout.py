@@ -12,12 +12,12 @@ from wortschatz import config
 from . import guide, theme
 from .state import state
 
-# (key, label, icon, url): the rooms of the house first, then the places to look things up
-NAV = [("home", "The house", "home", "/"),
+# (key, label, icon, url): the map and its rooms first, then the places to look things up
+NAV = [("home", "The map", "map", "/"),
        ("learn", "Learn room", "school", "/learn"),
        ("test", "Test room", "quiz", "/test"),
        ("second", "Second-chance room", "replay", "/second-chance"),
-       ("diary", "Living room · Diary", "weekend", "/diary"),
+       ("diary", "Diary", "auto_stories", "/diary"),
        ("stats", "Progress", "insights", "/stats"),
        ("words", "Word lists", "library_books", "/words")]
 

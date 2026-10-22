@@ -14,12 +14,13 @@ def _step(number: int, title: str, text: str, color: str = "var(--brand)") -> No
 
 
 def _how_it_works() -> None:
-    ui.label("A house with four rooms").classes("text-xl font-bold serif")
-    ui.label("Click a room on the home page, or pick it from the menu. In every room you first choose a word list, then you play.").classes("muted")
+    ui.label("Walk to a room").classes("text-xl font-bold serif")
+    ui.html("On the map, walk with <span class='kbd'>W</span> <span class='kbd'>A</span> <span class='kbd'>S</span> <span class='kbd'>D</span> or the arrow keys, or click where you want to go. "
+            "Step on a glowing pad and press <span class='kbd'>E</span> (or click the pad) to enter. In every room you first choose a word list, then you play.", sanitize=False)
     _step(1, "Learn room", "Pick nouns, verbs or adjectives and how many. Study the flip cards, then take a typed test, German → English and English → German.", "var(--learn)")
     _step(2, "Second-chance room", "Words you missed wait here. Study them again and take a re-test. Pass it and the word moves to your diary.", "var(--second)")
-    _step(3, "Test room", "Revise the words in your diary. A word you miss goes back to the second-chance room.", "var(--test)")
-    _step(4, "Living room · Diary", "The words that stay with you: only words you have passed live here. Browse them, search them, export them.", "var(--stay)")
+    _step(3, "Test room", "Revision: test yourself on the words in your diary. A word you miss goes back to the second-chance room.", "var(--test)")
+    _step(4, "Diary", "Your personal room: only words you have passed live here. Browse them, search them, export them.", "var(--stay)")
     with ui.column().classes("card-flat w-full gap-1").style("background:var(--surface-2)"):
         ui.label("The one rule").classes("font-bold")
         ui.html("A word <b>passes</b> only if <b>every</b> question about it is right.<br>"
@@ -53,7 +54,7 @@ def _track() -> None:
     ui.html("Nouns need their article (<b>der Tisch</b>). Verbs have three boxes: infinitive, Präteritum and Perfekt. "
             "Press <span class='kbd'>Enter</span> to check and again to continue. You may type <b>ae oe ue ss</b> for ä ö ü ß, or use the letter buttons.", sanitize=False)
     ui.label("Tracking your progress").classes("font-bold")
-    ui.html("<b>Living room</b>: every word in your diary, with how often you passed it in a row. Download it as CSV or Excel.<br>"
+    ui.html("<b>Diary</b>: every word in your diary, with how often you passed it in a row. Download it as CSV or Excel.<br>"
             "<b>Progress</b> (menu): how your diary grows, your pass rate, which direction is harder, whether second chances work, "
             "whether diary words fade, and your hardest words.<br>"
             "<b>Your files</b>: your diary and every answer are saved as plain CSV in the <span class='kbd'>user_data</span> folder, on your computer only.", sanitize=False)
