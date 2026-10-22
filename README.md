@@ -14,34 +14,32 @@ study the cards, take a typed test, and let the game sort every word for you:
      └──── study it again, take a re-test ──┘      a word you miss in a revision test goes back
 ```
 
-The game is a **top-down map you walk around**: a small campus of six rooms off one corridor. Move your character with **WASD or the arrow keys**
-(or click where you want to go), walk through a door, and step on a glowing pad. Press **E** (or click the pad) to enter. You come back out next to the pad you used.
+The opening page is four big buttons, one per mode, in a black and deep-blue design. Click one (or press **1**–**4**) and a small top-view character
+**runs to the button, jumps onto it, and the mode starts**. The Guide sits right below the buttons. There is no sidebar.
 
-![Walking around the map](docs/map.png)
+![The opening page](docs/home.png)
 
-| Room | What you do there |
+![The character runs to the button and jumps on it](docs/run_and_jump.gif)
+
+| Mode | What you do there |
 |---|---|
-| **Learn room** | Study new words as cards, then take the typed test. Passed words go into the diary. |
-| **Second-chance room** | Words you missed wait here. Study them again and pass a re-test to send them to the diary. |
-| **Test room** | Revision: test yourself on the words in your diary. A word you miss goes back to the second-chance room. |
+| **Learn** | Study new words as cards, then take the typed test. Passed words go into the diary. |
+| **Test** | Revision: test yourself on the words in your diary. A word you miss goes back to second chance. |
+| **Second chance** | Words you missed wait here. Study them again and pass a re-test to send them to the diary. |
 | **Diary** | Your personal room: every word you have proven, searchable and exportable. |
-| **Info hall** | A terminal that opens the **Guide** (how the game works, how points work, how to track progress) and one that opens **Progress**. |
-| **Word library** | Add and clean your own Excel/CSV word lists. |
 
-The map is plain canvas JavaScript ([`webapp/static/world.js`](webapp/static/world.js)): collision against the walls, click-to-walk path finding, sliding doors,
-and live counters (new words, words to revise, words waiting) above each pad. Below the map, buttons take you straight to each room if you would rather not walk.
-A **burger menu** opens and closes a sidebar with the same places, the Guide, the demo profile and dark mode.
-
-![The whole campus](docs/campus_map.png)
+Under the buttons are your level, today's points and your streak, plus links to **Progress** (the statistics) and **Word lists** (add your own Excel or CSV).
+The character is plain canvas JavaScript ([`webapp/static/hero.js`](webapp/static/hero.js)); without it the buttons still work, and with *reduce motion* set in
+your system the animation is skipped. [Full page](docs/home_full.png) · [phone width](docs/home_mobile.png)
 
 | Study cards (click to flip) | Typed test |
 |---|---|
 | ![A card](docs/card_front.png) | ![Test](docs/test.png) |
-| **Results: points and where each word went** | **The Guide** |
-| ![Results](docs/results.png) | ![Guide](docs/guide_points.png) |
+| **Results: points and where each word went** | **Progress** |
+| ![Results](docs/results.png) | ![Stats](docs/stats.png) |
 
-More: [Learn room](docs/learn.png) · [flipped card](docs/card_back.png) · [feedback after an answer](docs/feedback.png) · [Test room](docs/test_room.png) ·
-[second-chance room](docs/second_chance.png) · [diary](docs/diary.png) · [stats](docs/stats.png) · [phone width](docs/map_mobile.png) · [dark mode](docs/results_dark.png)
+More: [Learn](docs/learn.png) · [flipped card](docs/card_back.png) · [feedback after an answer](docs/feedback.png) · [Test](docs/test_room.png) ·
+[second chance](docs/second_chance.png) · [diary](docs/diary.png)
 
 ## The rules
 
@@ -55,10 +53,10 @@ More: [Learn room](docs/learn.png) · [flipped card](docs/card_back.png) · [fee
    - passed → it goes into **My diary**
    - missed → it goes onto the **second-chance list**
 5. **Second chance.** Study the missed words again and take a **re-test**. Pass it and the word moves into the diary; miss it and it stays.
-6. **Revise.** Go to the Test room (revision) whenever you like and test yourself on diary words. A word you miss goes **back to the second-chance list**,
+6. **Revise.** Open the Test mode (revision) whenever you like and test yourself on diary words. A word you miss goes **back to the second-chance list**,
    so the diary only ever holds words you currently know.
 
-In every room you first **choose the word list** (or all your words), so you can work through one list at a time.
+In every mode you first **choose the word list** (or all your words), so you can work through one list at a time.
 
 ### Points and levels
 
@@ -82,12 +80,12 @@ python main.py
 A browser tab opens at `http://localhost:8080` (if another program uses that port, the game picks the next free one and prints the address). On Windows you can also double-click `run.bat`; on macOS and Linux run `./run.sh`.
 Everything runs and stays on your own computer. Your diary is saved as plain CSV in `user_data/` (open it in Excel if you like).
 
-Switch to **Demo** in the sidebar to explore the Stats page straight away: it shows a month of play by a *simulated* learner,
+Switch to **Demo** (top right) to explore the Stats page straight away: it shows a month of play by a *simulated* learner,
 separate from your own diary.
 
 ## Your own words
 
-Open **Word lists** in the sidebar, drop in a `.csv` or `.xlsx` file and the game cleans it, shows what it changed, and lets you save it as a list to learn from.
+Open **Word lists** (link under the buttons), drop in a `.csv` or `.xlsx` file and the game cleans it, shows what it changed, and lets you save it as a list to learn from.
 
 | Column | Required | Notes |
 |---|---|---|
@@ -127,8 +125,8 @@ The page also writes plain-language findings, and each one stays silent when its
 
 ```
 main.py                 start the app (NiceGUI)
-webapp/                 the interface: the top-down map, rooms, flip cards, charts, theme (light and dark)
-  static/world.js         the walkable map (canvas, no libraries)
+webapp/                 the interface: the opening page, flip cards, charts, dark theme
+  static/hero.js          the character that runs to a button and jumps on it (canvas, no libraries)
 wortschatz/             the game, with no UI code
   progress.py             THE RULES: where a word lives, in 6 transitions
   session.py              choosing words, study cards, the test engine
@@ -140,13 +138,13 @@ wortschatz/             the game, with no UI code
   demo.py                 the simulated learner behind the Demo profile
 data/wordlists/         the bundled word list
 tools/                  how the bundled list is built and checked
-tests/                  194 tests
+tests/                  189 tests
 ```
 
 The rules live in one small module ([`wortschatz/progress.py`](wortschatz/progress.py)) and are tested exhaustively:
 all six transitions, the counters, and an invariant that **the saved diary equals what replaying the answer log under the rules produces**.
 The interface is NiceGUI (a Python framework on Quasar/Vue), chosen over Streamlit for real control over the design: 3D flip cards, keyboard-driven tests,
-custom components, a walkable canvas map, and dark mode.
+custom components, an animated character, and a dark theme.
 
 ### The bundled word list
 
@@ -163,9 +161,9 @@ pip install -r requirements-dev.txt
 python -m pytest
 ```
 
-194 tests (about three minutes): the rules and every transition, answer checking, word selection, the test engine, saving and reloading, CSV/Excel cleaning,
+189 tests (about three minutes): the rules and every transition, answer checking, word selection, the test engine, saving and reloading, CSV/Excel cleaning,
 every statistic against hand-computed numbers (and on empty data), the demo simulator, and **end-to-end tests where a simulated browser plays the real app**
-(use the map's door buttons, learn, miss a word, pass the re-test, fail a revision, earn points and a level, quit half way, switch word lists, verbs with three form boxes). Tests use a temporary data folder
+(click a mode button, learn, miss a word, pass the re-test, fail a revision, earn points and a level, quit half way, switch word lists, verbs with three form boxes). Tests use a temporary data folder
 and never touch your diary.
 
 ## Limitations

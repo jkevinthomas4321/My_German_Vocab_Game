@@ -8,7 +8,7 @@ from .. import components as C
 from ..layout import frame
 from ..state import state
 
-TONE = {"good": "#2F5D50", "watch": "#A4553D", "info": "#35506B"}
+TONE = {"good": "#34D399", "watch": "#FF8A5B", "info": "#6EA8FF"}
 
 
 def chart_card(title: str, caption: str, options: dict, height: int = 280) -> None:
@@ -66,7 +66,7 @@ def stats_page() -> None:
             chart_card("Pass rate by stage", "A word passes when every question about it is right.",
                        charts.rate_with_whiskers(phase["label"], phase["rate"], phase["lo"], phase["hi"], phase["n"]))
             chart_card("Pass rate by word type", "Which kind of word is hardest?",
-                       charts.rate_with_whiskers(by_class["word_class"], by_class["rate"], by_class["lo"], by_class["hi"], by_class["n"], "#1B2A41"))
+                       charts.rate_with_whiskers(by_class["word_class"], by_class["rate"], by_class["lo"], by_class["hi"], by_class["n"], "#8DB6FF"))
         gaps, journey = stats.revision_by_gap(outcomes), stats.second_chance_journey(outcomes, progress)
         with ui.row().classes("w-full gap-4 flex-wrap items-stretch"):
             chart_card("Which direction is harder?", "Share of questions answered correctly.",

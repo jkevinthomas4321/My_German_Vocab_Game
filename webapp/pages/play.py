@@ -213,7 +213,7 @@ def play() -> None:
                             + (f'<p style="margin-top:.7rem"><span class="pointsburst">+{earned} points</span> '
                                f'&nbsp; Level {after.number} · {after.title}</p>' if earned else ''), sanitize=False)
                 if after.number > before.number:
-                    with ui.row().classes("card-flat items-center gap-3 w-full").style("border-color:var(--brass);background:color-mix(in srgb, var(--brass) 12%, var(--surface))"):
+                    with ui.row().classes("card-flat items-center gap-3 w-full").style("border-color:var(--accent);background:color-mix(in srgb, var(--accent) 14%, var(--surface))"):
                         ui.icon("emoji_events", color="amber-9", size="2rem")
                         ui.label(f"Level up! You are now level {after.number}: {after.title}.").classes("text-lg font-bold")
                 with ui.row().classes("w-full gap-4 items-start max-md:flex-wrap no-wrap"):
@@ -226,7 +226,7 @@ def play() -> None:
                         if not passed:
                             ui.label("None this time.").classes("muted")
                     with ui.column().classes("card grow gap-2").style("flex:1"):
-                        ui.html(f'<b style="color:#B7791F;font-size:1.1rem">↺ Second chance ({len(failed)})</b>')
+                        ui.html(f'<b style="color:#FF8A5B;font-size:1.1rem">↺ Second chance ({len(failed)})</b>')
                         for r in failed:
                             wrong = r["wrong"][0].check if r["wrong"] else None
                             typed = f' · you typed “{C.esc(wrong.given.strip(" ·-–—"))}”' if wrong and wrong.given.strip(" ·-–—") else ""

@@ -8,7 +8,7 @@ from nicegui import ui
 
 from wortschatz import config
 
-from . import house
+from .icons import ICONS
 
 FORM_LABELS = (("Präteritum", "past_tense"), ("Perfekt", "perfect_tense"))
 
@@ -92,9 +92,9 @@ ROOM_COLORS = {"learn": "--learn", "test": "--test", "second": "--second", "stay
 
 
 def room_banner(room: str, title: str, subtitle: str) -> None:
-    """The coloured banner at the top of a room, with its little illustration."""
+    """The banner at the top of a mode, lit in the mode's colour, with its icon."""
     with ui.element("div").classes("roombanner w-full").style(f"--room:var({ROOM_COLORS[room]})"):
-        ui.html(house.ROOM_ART[room](), sanitize=False).classes("art")
+        ui.html(ICONS[room], sanitize=False).classes("art")
         with ui.column().classes("gap-0"):
             ui.html(f"<h1>{esc(title)}</h1><p>{esc(subtitle)}</p>", sanitize=False)
 

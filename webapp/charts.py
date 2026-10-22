@@ -3,16 +3,16 @@ from __future__ import annotations
 
 import pandas as pd
 
-BLUE, ORANGE, GREEN, GOLD, MUTED = "#35506B", "#A4553D", "#2F5D50", "#B8893A", "#8A8576"   # the app palette: slate, terracotta, pine, brass
-_AXIS = {"axisLabel": {"color": MUTED}, "axisLine": {"lineStyle": {"color": "#D8D2C6"}},
-         "splitLine": {"lineStyle": {"color": "rgba(150,150,150,.18)"}}}
+BLUE, ORANGE, GREEN, GOLD, MUTED = "#4F8CFF", "#FF8A5B", "#2DD4A8", "#F5B94C", "#8C9BB5"   # the app palette, bright enough for the dark background
+_AXIS = {"axisLabel": {"color": MUTED}, "axisLine": {"lineStyle": {"color": "#2A3A5A"}},
+         "splitLine": {"lineStyle": {"color": "rgba(140,160,200,.14)"}}}
 _BASE = {"animationDuration": 500, "backgroundColor": "transparent", "textStyle": {"color": MUTED},
          "grid": {"left": 46, "right": 18, "top": 30, "bottom": 34, "containLabel": False}}
 
 # draws the vertical 95% interval whisker of the "custom" series (columns: category, low, high)
 _WHISKER = """function (params, api) {
   var x = api.value(0), hi = api.coord([x, api.value(2)]), lo = api.coord([x, api.value(1)]);
-  var w = api.size([1, 0])[0] * 0.12, s = {stroke: '#1B2A41', lineWidth: 1.6};
+  var w = api.size([1, 0])[0] * 0.12, s = {stroke: '#C9D6EE', lineWidth: 1.6};
   return {type: 'group', children: [
     {type: 'line', shape: {x1: hi[0], y1: hi[1], x2: lo[0], y2: lo[1]}, style: s},
     {type: 'line', shape: {x1: hi[0] - w, y1: hi[1], x2: hi[0] + w, y2: hi[1]}, style: s},
@@ -41,7 +41,7 @@ def diary_growth(frame: pd.DataFrame) -> dict:
         series=[{"name": "Words in the diary", "type": "line", "data": [int(v) for v in frame["diary"]], "smooth": 0.25, "showSymbol": False,
                  "lineStyle": {"width": 3, "color": GREEN}, "itemStyle": {"color": GREEN},
                  "areaStyle": {"color": {"type": "linear", "x": 0, "y": 0, "x2": 0, "y2": 1,
-                                         "colorStops": [{"offset": 0, "color": "rgba(47,93,80,.35)"}, {"offset": 1, "color": "rgba(47,93,80,0)"}]}}}])
+                                         "colorStops": [{"offset": 0, "color": "rgba(45,212,168,.35)"}, {"offset": 1, "color": "rgba(45,212,168,0)"}]}}}])
 
 
 def daily_tests(frame: pd.DataFrame) -> dict:
@@ -63,9 +63,9 @@ def calendar(frame: pd.DataFrame, end: pd.Timestamp, weeks: int = 20) -> dict:
     data = [[d.strftime("%Y-%m-%d"), int(n)] for d, n in zip(frame["day"], frame["tests"])]
     return _opts(
         tooltip={":formatter": "function(p){return p.value[0] + ': ' + p.value[1] + ' words tested';}"},
-        visualMap={"min": 0, "max": top, "show": False, "inRange": {"color": ["#E9E4D8", "#D9C08A", GOLD, "#1B2A41"]}},
+        visualMap={"min": 0, "max": top, "show": False, "inRange": {"color": ["#111C33", "#1E3F85", BLUE, "#CFE0FF"]}},
         calendar={"range": [start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")], "cellSize": ["auto", 18], "left": 40, "right": 10, "top": 28,
-                  "itemStyle": {"borderWidth": 3, "borderColor": "transparent", "color": "#E9E4D8"}, "splitLine": {"show": False},
+                  "itemStyle": {"borderWidth": 3, "borderColor": "transparent", "color": "#111C33"}, "splitLine": {"show": False},
                   "yearLabel": {"show": False}, "monthLabel": {"color": MUTED}, "dayLabel": {"color": MUTED, "firstDay": 1}},
         series=[{"type": "heatmap", "coordinateSystem": "calendar", "data": data, "itemStyle": {"borderRadius": 4}}])
 
@@ -95,7 +95,7 @@ def line_with_band(labels: list[str], rate, lo, hi, n) -> dict:
                "splitLine": _AXIS["splitLine"]},
         series=[{"type": "line", "data": lo, "stack": "band", "symbol": "none", "lineStyle": {"opacity": 0}, "tooltip": {"show": False}},
                 {"type": "line", "data": [round(b - a, 4) for a, b in zip(lo, hi)], "stack": "band", "symbol": "none", "lineStyle": {"opacity": 0},
-                 "areaStyle": {"color": "rgba(53,80,107,.16)"}, "tooltip": {"show": False}},
+                 "areaStyle": {"color": "rgba(79,140,255,.16)"}, "tooltip": {"show": False}},
                 {"name": "Pass rate", "type": "line", "data": rate, "symbolSize": 9, "lineStyle": {"width": 3, "color": BLUE},
                  "itemStyle": {"color": BLUE},
                  "label": {"show": True, "position": "top", "color": MUTED, ":formatter": "function(p){return Math.round(p.value*100)+'%'}"}}])

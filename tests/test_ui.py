@@ -123,7 +123,7 @@ async def test_every_page_loads_on_the_demo_profile(user: User, path):
 
 
 def room_elements(user: User) -> dict[str, ui.element]:
-    """The four door buttons under the map on the home page, by key (learn, test, second, stay)."""
+    """The four mode buttons on the opening page, by key (learn, test, second, stay)."""
     rooms = {}
     for element in user.find(kind=ui.element).elements:
         for key in ("learn", "test", "second", "stay"):
@@ -137,38 +137,38 @@ def click_element(user: User, element) -> None:
     UserInteraction(user, {element}, None).click()
 
 
-async def test_home_is_a_map_with_the_four_rooms_as_door_buttons(user: User):
+async def test_the_opening_page_has_four_mode_buttons(user: User):
     await user.open("/")
-    await user.should_see("Walk to a room")
+    await user.should_see("Choose a mode")
     assert set(room_elements(user)) == {"learn", "test", "second", "stay"}
 
 
 @pytest.mark.parametrize("room, expected", [("learn", "How many words?"), ("test", "Your diary is empty"),
                                             ("second", "Nothing to repeat"), ("stay", "Your diary is empty")])
-async def test_clicking_a_door_button_steps_inside(user: User, room, expected):
+async def test_clicking_a_mode_button_starts_that_mode(user: User, room, expected):
     await user.open("/")
     click_element(user, room_elements(user)[room])
     await user.should_see(expected)
 
 
-async def test_door_buttons_show_what_is_waiting(user: User):
+async def test_mode_buttons_show_what_is_waiting(user: User):
     prepare(nouns(3), fail=True)
     prepare(nouns(2))
     await user.open("/")
-    text = " ".join(str(getattr(e, "content", "")) for e in user.find(kind=ui.html).elements if "class='n'" in str(getattr(e, "content", "")))
+    text = " ".join(str(getattr(e, "content", "")) for e in user.find(kind=ui.html).elements if 'class="badge"' in str(getattr(e, "content", "")))
     assert "3 waiting" in text and "2 words" in text and "2 to revise" in text and "510 new" in text
 
 
-async def test_the_sidebar_lists_every_room_and_the_guide(user: User):
+async def test_there_is_no_sidebar_but_the_page_links_to_progress_and_word_lists(user: User):
     await user.open("/")
-    for label in ("The map", "Learn room", "Test room", "Second-chance room", "Diary", "Progress", "Word lists", "Guide: how it works"):
+    for label in ("Learn", "Test", "Second chance", "Diary", "Progress", "Word lists", "Guide"):
         await user.should_see(label)
+    assert not any(isinstance(e, ui.left_drawer) for e in user.client.elements.values())
 
 
-async def test_the_guide_explains_rooms_points_and_tracking(user: User):
+async def test_the_guide_sits_below_the_mode_buttons(user: User):
     await user.open("/")
-    user.find("Guide: how it works").click()
-    for text in ("Walk to a room", "The one rule", "How your points work", "Learn well, and track it"):
+    for text in ("How the game works", "The one rule", "How your points work", "Learn well, and track it"):
         await user.should_see(text)
 
 
@@ -312,7 +312,7 @@ async def test_ending_a_session_keeps_the_words_already_finished(user: User):
         await go_on(user)
     finished = next(iter(state.run.test.outcomes))
     user.find("End session").click()
-    await user.should_see("Walk to a room")
+    await user.should_see("Choose a mode")
     assert state.run is None and state.store.progress.status(finished) == DIARY and first
 
 
@@ -495,16 +495,12 @@ async def test_missing_a_word_earns_no_points(user: User):
     assert state.total_points() == 0
 
 
-async def test_the_map_page_ships_its_world_script_and_numbers(user: User):
+async def test_the_opening_page_ships_its_character_script(user: User):
     await user.open("/")
-    await user.should_see("Walk to a room")
-    response = await user.http_client.get("/static-wortschatz/world.js")
-    assert response.status_code == 200 and "Learn room" in response.text and "Diary" in response.text and "Living room" not in response.text
+    response = await user.http_client.get("/static-wortschatz/hero.js")
+    assert response.status_code == 200 and "hero-stage" in response.text and "jump" in response.text
 
 
-def test_every_pad_on_the_map_leads_to_a_real_page():
-    import re
-    from pathlib import Path
-    script = (Path(__file__).resolve().parent.parent / "webapp" / "static" / "world.js").read_text(encoding="utf-8")
-    urls = set(re.findall(r'url: "(/[a-z-]*)"', script))
-    assert urls == {"/learn", "/test", "/second-chance", "/diary", "/stats", "/words"} and urls <= set(ROUTES)
+def test_every_mode_button_leads_to_a_real_page():
+    from webapp.pages.home import MODES
+    assert {url for *_, url in MODES} == {"/learn", "/test", "/second-chance", "/diary"} and {url for *_, url in MODES} <= set(ROUTES)
