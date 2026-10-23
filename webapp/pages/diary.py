@@ -5,6 +5,7 @@ from wortschatz import config, session, wordlist
 
 from .. import components as C
 from ..layout import frame
+from ..reset import open_reset_dialog
 from ..state import state
 from .learn import CLASS_NAMES
 from .second_chance import GERMAN_SLOT, word_rows
@@ -20,12 +21,15 @@ def diary() -> None:
         C.room_banner("stay", "Diary", "Your personal room: only words you have passed live here. Revise them in the Test room.")
         if diary_frame.empty:
             C.empty_state("menu_book", "Your diary is empty", "Learn some words and pass the test to fill it.", "Go to the Learn room", "/learn")
+            if len(state.store.attempts()):
+                ui.button("Reset progress", icon="restart_alt", on_click=open_reset_dialog, color=None).props("outline no-caps")
             return
 
         counts = session.class_counts(diary_frame)
         C.tiles([("Words in the diary", str(len(diary_frame)), ""), *[(CLASS_NAMES.get(c, c.title()), str(n), "") for c, n in list(counts.items())[:3]]])
         with ui.row().classes("gap-3"):
             ui.button("Revise them in the Test room", icon="quiz", on_click=lambda: ui.navigate.to("/test")).props("unelevated no-caps color=primary")
+            ui.button("Reset progress", icon="restart_alt", on_click=open_reset_dialog, color=None).props("outline no-caps")
 
         rows = word_rows(diary_frame.to_dict("records"), lambda w: {
             "tests": w["tests"], "streak": w["streak"],

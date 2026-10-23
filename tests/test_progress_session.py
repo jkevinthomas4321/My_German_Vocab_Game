@@ -286,3 +286,16 @@ def test_a_damaged_attempts_row_is_skipped(mini_words):
     with open(store.attempts_file, "a", encoding="utf-8") as handle:
         handle.write("not-a-date,s,learn,w,noun,x,X,de_en,maybe,5,,\n")
     assert len(store.attempts()) == 2
+
+
+def test_a_reset_deletes_the_profile_files_and_a_backup_zip_keeps_them(mini_words):
+    import io
+    import zipfile
+    store = Store("me")
+    play(TestRun(store, [word(mini_words, "Tisch")], shuffle=False))
+    assert store.progress_file.exists() and store.attempts_file.exists()
+    with zipfile.ZipFile(io.BytesIO(store.backup_zip())) as archive:
+        assert sorted(archive.namelist()) == ["attempts.csv", "progress.csv"]
+    store.reset()
+    assert not store.progress_file.exists() and not store.attempts_file.exists() and store.progress.count(DIARY) == 0
+    assert Store("me").progress.count(DIARY) == 0 and Store("me").attempts().empty

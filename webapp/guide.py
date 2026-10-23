@@ -63,13 +63,20 @@ def _track() -> None:
             "The game cleans it, shows what it changed, and lets you learn from it.", sanitize=False)
 
 
-def section() -> None:
-    """The three guide cards, side by side on a wide screen."""
-    ui.element("div").props("id=guide")
-    with ui.element("div").classes("sectionhead"):
-        ui.html("<h2>Guide</h2>", sanitize=False)
-        ui.label("how the game works, how your points work, and how to learn and track your progress").classes("muted")
-    with ui.element("div").classes("guidegrid"):
-        for part in (_how_it_works, _points, _track):
-            with ui.column().classes("card gap-2"):
-                part()
+def build() -> ui.dialog:
+    """The Guide pop-up: three tabs. Open it with `.open()`; it is only shown when someone asks for it."""
+    with ui.dialog() as dialog, ui.card().classes("guide-card gap-2"):
+        with ui.row().classes("w-full items-center justify-between no-wrap"):
+            ui.label("Guide").classes("text-2xl font-bold")
+            ui.button(icon="close", on_click=dialog.close, color=None).props("flat round dense")
+        with ui.tabs().classes("w-full") as tabs:
+            how = ui.tab("How the game works", icon="route")
+            pts = ui.tab("Points", icon="emoji_events")
+            track = ui.tab("Learn & track", icon="insights")
+        with ui.tab_panels(tabs, value=how).classes("w-full").style("overflow:auto;max-height:58vh;background:transparent"):
+            for tab, part in ((how, _how_it_works), (pts, _points), (track, _track)):
+                with ui.tab_panel(tab).classes("gap-2"):
+                    part()
+        with ui.row().classes("justify-end w-full"):
+            ui.button("Got it", on_click=dialog.close).props("unelevated no-caps color=primary")
+    return dialog

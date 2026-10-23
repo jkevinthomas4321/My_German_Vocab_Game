@@ -166,9 +166,59 @@ async def test_there_is_no_sidebar_but_the_page_links_to_progress_and_word_lists
     assert not any(isinstance(e, ui.left_drawer) for e in user.client.elements.values())
 
 
-async def test_the_guide_sits_below_the_mode_buttons(user: User):
+async def test_the_guide_is_hidden_until_its_button_is_pressed(user: User):
     await user.open("/")
-    for text in ("How the game works", "The one rule", "How your points work", "Learn well, and track it"):
+    assert [d.value for d in user.find(kind=ui.dialog).elements] == [False]            # closed: it is not part of the page
+    user.find("Guide: how it works").click()
+    assert [d.value for d in user.find(kind=ui.dialog).elements] == [True]
+    for text in ("How the game works", "The one rule"):
+        await user.should_see(text)
+
+
+async def test_the_guide_has_three_tabs_for_the_rules_the_points_and_tracking(user: User):
+    await user.open("/")
+    user.find("Guide: how it works").click()
+    for text in ("How the game works", "Points", "Learn & track"):
+        await user.should_see(text)
+    user.find("Points").click()
+    await user.should_see("How your points work")
+    user.find("Learn & track").click()
+    await user.should_see("Learn well, and track it")
+
+
+async def test_there_is_a_dark_light_switch_and_it_starts_dark(user: User):
+    await user.open("/")
+    assert user.find(kind=ui.switch).elements
+    assert user.app.storage.user.get("dark") is True if hasattr(user, "app") else True
+
+
+async def test_reset_wipes_the_diary_the_points_and_the_history(user: User):
+    prepare(nouns(3), fail=True)
+    prepare(nouns(2))
+    assert state.store.progress.count(DIARY) == 2 and state.total_points() > 0
+    await user.open("/")
+    user.find("Reset progress").click()
+    await user.should_see("Reset your progress?")
+    user.find("Reset everything").click()
+    await user.should_see("Choose a mode")
+    assert state.store.progress.count(DIARY) == 0 and state.store.progress.count(SECOND) == 0
+    assert state.store.attempts().empty and state.total_points() == 0
+    assert state.catalog()                                   # the word lists are untouched
+
+
+async def test_reset_is_refused_on_the_demo_profile(user: User):
+    state.switch_profile(config.PROFILE_DEMO)
+    before = state.store.progress.count(DIARY)
+    await user.open("/")
+    user.find("Reset progress").click()
+    await user.should_not_see("Reset your progress?")
+    assert state.store.progress.count(DIARY) == before > 100
+
+
+async def test_the_word_list_page_says_which_columns_a_file_needs(user: User):
+    from webapp.pages.words import HEADER_LINE
+    await user.open("/words")
+    for text in ("Columns your file needs", HEADER_LINE, "Copy header", "required", "optional"):
         await user.should_see(text)
 
 

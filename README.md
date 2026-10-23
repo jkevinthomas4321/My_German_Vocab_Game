@@ -15,7 +15,7 @@ study the cards, take a typed test, and let the game sort every word for you:
 ```
 
 The opening page is four big buttons, one per mode, in a black and deep-blue design. Click one (or press **1**–**4**) and a small top-view character
-**runs to the button, jumps onto it, and the mode starts**. The Guide sits right below the buttons. There is no sidebar.
+**runs to the button, jumps onto it, and the mode starts**. There is no sidebar. The **Guide** is one button away (it opens a pop-up, so it is out of the way until you want it).
 
 ![The opening page](docs/home.png)
 
@@ -28,9 +28,9 @@ The opening page is four big buttons, one per mode, in a black and deep-blue des
 | **Second chance** | Words you missed wait here. Study them again and pass a re-test to send them to the diary. |
 | **Diary** | Your personal room: every word you have proven, searchable and exportable. |
 
-Under the buttons are your level, today's points and your streak, plus links to **Progress** (the statistics) and **Word lists** (add your own Excel or CSV).
+Under the buttons are your level, today's points and your streak, and buttons for the **Guide**, **Progress** (the statistics), **Word lists** (add your own Excel or CSV) and **Reset progress**. The switch in the top bar toggles **dark and light** ([light version](docs/home_light.png)); your choice is remembered.
 The character is plain canvas JavaScript ([`webapp/static/hero.js`](webapp/static/hero.js)); without it the buttons still work, and with *reduce motion* set in
-your system the animation is skipped. [Full page](docs/home_full.png) · [phone width](docs/home_mobile.png)
+your system the animation is skipped. [The Guide](docs/guide.png) · [phone width](docs/home_mobile.png)
 
 | Study cards (click to flip) | Typed test |
 |---|---|
@@ -66,6 +66,8 @@ happened. Levels get further apart as you go: *Anfänger*, *Entdecker*, *Wortsam
 
 Every move is saved the moment a word is finished, so closing the window never loses progress.
 
+**Starting over.** *Reset progress* (on the opening page and in the Diary) wipes your diary, second-chance list, answer history and points, after a confirmation that offers a zip backup first. Your word lists are not touched. Your progress is stored in `user_data/` on your own computer and is **ignored by git**, so nothing of it ever reaches GitHub: someone who downloads the project always starts with an empty diary.
+
 ## Quick start
 
 You need **Python 3.11 or newer**.
@@ -85,7 +87,15 @@ separate from your own diary.
 
 ## Your own words
 
-Open **Word lists** (link under the buttons), drop in a `.csv` or `.xlsx` file and the game cleans it, shows what it changed, and lets you save it as a list to learn from.
+Open **Word lists** (button under the main buttons). The page shows the **columns your file needs**, with a *Copy header* button, and templates to download. Drop in a `.csv` or `.xlsx` file (any number of rows) and the game cleans it, shows what it changed, and lets you save it as a list to learn from.
+
+![Columns your file needs](docs/words_columns.png)
+
+The header row to use:
+
+```
+word_class,english,article,german,plural,past_tense,perfect_tense,zipf
+```
 
 | Column | Required | Notes |
 |---|---|---|
@@ -138,7 +148,7 @@ wortschatz/             the game, with no UI code
   demo.py                 the simulated learner behind the Demo profile
 data/wordlists/         the bundled word list
 tools/                  how the bundled list is built and checked
-tests/                  189 tests
+tests/                  195 tests
 ```
 
 The rules live in one small module ([`wortschatz/progress.py`](wortschatz/progress.py)) and are tested exhaustively:
@@ -161,7 +171,7 @@ pip install -r requirements-dev.txt
 python -m pytest
 ```
 
-189 tests (about three minutes): the rules and every transition, answer checking, word selection, the test engine, saving and reloading, CSV/Excel cleaning,
+195 tests (about three minutes): the rules and every transition, answer checking, word selection, the test engine, saving and reloading, CSV/Excel cleaning,
 every statistic against hand-computed numbers (and on empty data), the demo simulator, and **end-to-end tests where a simulated browser plays the real app**
 (click a mode button, learn, miss a word, pass the re-test, fail a revision, earn points and a level, quit half way, switch word lists, verbs with three form boxes). Tests use a temporary data folder
 and never touch your diary.

@@ -3,16 +3,16 @@ from __future__ import annotations
 
 import pandas as pd
 
-BLUE, ORANGE, GREEN, GOLD, MUTED = "#4F8CFF", "#FF8A5B", "#2DD4A8", "#F5B94C", "#8C9BB5"   # the app palette, bright enough for the dark background
-_AXIS = {"axisLabel": {"color": MUTED}, "axisLine": {"lineStyle": {"color": "#2A3A5A"}},
-         "splitLine": {"lineStyle": {"color": "rgba(140,160,200,.14)"}}}
+BLUE, ORANGE, GREEN, GOLD, MUTED = "#4F8CFF", "#FF8A5B", "#2DD4A8", "#F5B94C", "#7587A6"   # the app palette: mid-tones that read on both the dark and the light theme
+_AXIS = {"axisLabel": {"color": MUTED}, "axisLine": {"lineStyle": {"color": "rgba(120,140,180,.45)"}},
+         "splitLine": {"lineStyle": {"color": "rgba(130,150,190,.22)"}}}
 _BASE = {"animationDuration": 500, "backgroundColor": "transparent", "textStyle": {"color": MUTED},
          "grid": {"left": 46, "right": 18, "top": 30, "bottom": 34, "containLabel": False}}
 
 # draws the vertical 95% interval whisker of the "custom" series (columns: category, low, high)
 _WHISKER = """function (params, api) {
   var x = api.value(0), hi = api.coord([x, api.value(2)]), lo = api.coord([x, api.value(1)]);
-  var w = api.size([1, 0])[0] * 0.12, s = {stroke: '#C9D6EE', lineWidth: 1.6};
+  var w = api.size([1, 0])[0] * 0.12, s = {stroke: '#7F93B5', lineWidth: 1.6};
   return {type: 'group', children: [
     {type: 'line', shape: {x1: hi[0], y1: hi[1], x2: lo[0], y2: lo[1]}, style: s},
     {type: 'line', shape: {x1: hi[0] - w, y1: hi[1], x2: hi[0] + w, y2: hi[1]}, style: s},
@@ -63,9 +63,9 @@ def calendar(frame: pd.DataFrame, end: pd.Timestamp, weeks: int = 20) -> dict:
     data = [[d.strftime("%Y-%m-%d"), int(n)] for d, n in zip(frame["day"], frame["tests"])]
     return _opts(
         tooltip={":formatter": "function(p){return p.value[0] + ': ' + p.value[1] + ' words tested';}"},
-        visualMap={"min": 0, "max": top, "show": False, "inRange": {"color": ["#111C33", "#1E3F85", BLUE, "#CFE0FF"]}},
+        visualMap={"min": 0, "max": top, "show": False, "inRange": {"color": ["rgba(127,147,181,.16)", "#6C9BFF", "#3B7BFF", "#7C5CFF"]}},
         calendar={"range": [start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")], "cellSize": ["auto", 18], "left": 40, "right": 10, "top": 28,
-                  "itemStyle": {"borderWidth": 3, "borderColor": "transparent", "color": "#111C33"}, "splitLine": {"show": False},
+                  "itemStyle": {"borderWidth": 3, "borderColor": "transparent", "color": "rgba(127,147,181,.16)"}, "splitLine": {"show": False},
                   "yearLabel": {"show": False}, "monthLabel": {"color": MUTED}, "dayLabel": {"color": MUTED, "firstDay": 1}},
         series=[{"type": "heatmap", "coordinateSystem": "calendar", "data": data, "itemStyle": {"borderRadius": 4}}])
 

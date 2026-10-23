@@ -6,7 +6,7 @@ from nicegui import ui
 from wortschatz import stats
 
 from .. import components as C
-from .. import guide
+from ..reset import open_reset_dialog
 from ..icons import ICONS
 from ..layout import frame
 from ..state import state
@@ -32,7 +32,7 @@ def mode_button(key: str, color: str, title: str, caption: str, badge: str, targ
 
 
 def home() -> None:
-    with frame("home"):
+    with frame("home") as shell:
         counts = state.counts()
         kpi = stats.kpis(state.store.progress, state.store.attempts())
         level = state.level()
@@ -56,7 +56,8 @@ def home() -> None:
             ui.label(f"Level {level.number} · {level.title}").classes("chip")
             ui.label(f"+{state.points_today()} points today").classes("chip")
             ui.label(f"{kpi['streak']} day streak").classes("chip")
-            ui.link("Progress", "/stats").classes("navlink")
-            ui.link("Word lists", "/words").classes("navlink")
-
-        guide.section()
+        with ui.element("div").classes("quicklinks w-full"):
+            ui.button("Guide: how it works", icon="menu_book", on_click=shell.guide.open).props("unelevated no-caps color=primary")
+            ui.button("Progress", icon="insights", on_click=lambda: ui.navigate.to("/stats"), color=None).props("outline no-caps")
+            ui.button("Word lists", icon="library_books", on_click=lambda: ui.navigate.to("/words"), color=None).props("outline no-caps")
+            ui.button("Reset progress", icon="restart_alt", on_click=open_reset_dialog, color=None).props("flat no-caps").classes("muted")

@@ -2,7 +2,9 @@
 (one row per answered question, the source for all statistics). Plain CSV, so you can open both in Excel."""
 from __future__ import annotations
 
+import io
 import os
+import zipfile
 from datetime import datetime
 from pathlib import Path
 from typing import Iterable, Mapping
@@ -104,6 +106,15 @@ class Store:
             "word_class": record["word_class"], "english": record["english"], "german": record["german"],
             "direction": "", "correct": 0, "response_ms": 0, "given": "", "expected": ""}])
         return True
+
+    def backup_zip(self) -> bytes:
+        """The profile's two files in one zip, so a reset can be undone by copying them back into the folder."""
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+            for path in (self.progress_file, self.attempts_file):
+                if path.exists():
+                    archive.write(path, path.name)
+        return buffer.getvalue()
 
     def reset(self) -> None:
         for path in (self.progress_file, self.attempts_file):
