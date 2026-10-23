@@ -17,26 +17,72 @@ Load your own Excel or CSV word list, learn with flip cards, answer by typing, a
 
 <br>
 
-<img src="docs/home.png" alt="The opening page: four mode buttons and a small character on a START mat" width="900">
+<img src="docs/home.png" alt="The opening page with the four mode buttons" width="900">
 
 </div>
 
 ## What makes it different
 
 - **The diary is earned.** A word only goes into your diary after you pass *every* question about it. Miss it and it waits in the *second chance* list until you pass a re-test. A word you miss while revising falls back to second chance, so the diary only holds words you currently know.
-- **Four modes, one click each.** Learn, Test, Second chance, Diary. Click a button (or press 1 to 4) and a small top-view character **runs to it and jumps on it**; then the mode starts.
+- **Four modes, one click each.** Learn, Test, Second chance, Diary. Click a button (or press 1 to 4) and the mode starts.
 - **Typed answers, both directions.** German → English and English → German. Nouns need their article, verbs need infinitive, Präteritum and Perfekt.
 - **Your own words.** Drop in an Excel or CSV file of any size; the game cleans it and tells you what it changed.
 - **A data-analytics project inside a game.** Every answer is logged, and the Progress page answers real questions about your learning with pandas, confidence intervals and plain-language findings.
 - **Private by design.** It runs only on your computer. Your diary is saved as plain CSV in `user_data/`, which git ignores, so nothing of it ever reaches GitHub.
 
-<div align="center">
+## How to use it
 
-![The character runs to a button and jumps on it](docs/run_and_jump.gif)
+You need **Python 3.11 or newer** and **git**. Check with `python --version` (on macOS and Linux it may be `python3`).
 
-*Click a mode: the character runs to its button, jumps on it, and the mode starts.*
+**1. Download the project**
 
-</div>
+```bash
+git clone https://github.com/jkevinthomas4321/My_German_Vocab_Game.git
+cd My_German_Vocab_Game
+```
+
+**2. Install the requirements** (a virtual environment keeps them away from your other projects; you can skip it if you prefer)
+
+```bash
+python -m venv .venv
+```
+
+Activate it: on Windows `.venv\Scripts\activate`, on macOS and Linux `source .venv/bin/activate`. Then:
+
+```bash
+pip install -r requirements.txt
+```
+
+**3. Start the game**
+
+```bash
+python main.py
+```
+
+A browser tab opens at **http://localhost:8080**. If another program already uses that port, the game picks the next free one and prints the address in the terminal.
+Stop the game with `Ctrl+C` in the terminal. Shortcuts: on Windows double-click `run.bat`; on macOS and Linux run `./run.sh`.
+
+**4. Play**
+
+1. Click **Learn**, choose a word list, a word type and how many words, and study the flip cards.
+2. Take the test by typing the answers. Words you pass go into your diary; words you miss wait in **Second chance**.
+3. Come back any day: **Test** revises your diary, **Second chance** retries missed words, **Diary** shows everything you have proven.
+4. Press **Guide: how it works** on the opening page for the rules and the points, or **Progress** for your statistics.
+
+Want to see the statistics before you have played? Switch to **Demo** (top right): it shows a month of play by a *simulated* learner, separate from your own diary.
+To learn from your own list instead of the bundled one, see [Your own words](#your-own-words).
+
+**Updating later:** `git pull`, then `pip install -r requirements.txt` again if the requirements changed. Your progress is not affected (see [Your progress, and starting over](#your-progress-and-starting-over)).
+
+**If something goes wrong**
+
+| Problem | Fix |
+|---|---|
+| `python` is not found | Install Python from python.org (tick *Add Python to PATH* on Windows), or try `python3` / `py` |
+| `pip install` fails on an old Python | Check `python --version` is 3.11 or newer |
+| The browser does not open | Open the address printed in the terminal yourself |
+| Port 8080 is busy | Nothing to do: the game uses the next free port. To pick one yourself: `PORT=8090 python main.py` (macOS/Linux) or `set PORT=8090 && python main.py` (Windows cmd) |
+| You want to start fresh | Press **Reset progress** on the opening page |
 
 ## Screenshots
 
@@ -113,22 +159,6 @@ The **Guide** button explains all of this inside the app.
 ### Keyboard
 
 `1`–`4` pick a mode · `Space` flips a card · `←` `→` move between cards · `Enter` checks an answer and continues · type `ae oe ue ss` for `ä ö ü ß`, or use the letter buttons.
-
-## Quick start
-
-You need **Python 3.11 or newer**.
-
-```bash
-git clone https://github.com/jkevinthomas4321/My_German_Vocab_Game.git
-cd My_German_Vocab_Game
-pip install -r requirements.txt
-python main.py
-```
-
-A browser tab opens at `http://localhost:8080` (if another program uses that port, the game picks the next free one and prints the address).
-On Windows you can also double-click `run.bat`; on macOS and Linux run `./run.sh`.
-
-Click **Demo** (top right) to explore the Progress page straight away: it shows a month of play by a *simulated* learner, separate from your own diary.
 
 ## Your own words
 
@@ -212,7 +242,7 @@ tests/                  195 tests
 
 - **The rules live in one small module** ([`wortschatz/progress.py`](wortschatz/progress.py)) and are tested exhaustively: all six transitions, the counters, and an invariant that *the saved diary equals what replaying the answer log under the rules produces*.
 - **The game has no UI code**, so it is tested without a browser; the interface only calls it.
-- **NiceGUI** (a Python framework on Quasar/Vue) was chosen over Streamlit for real control over the design: 3D flip cards, keyboard-driven tests, a canvas character, and a light/dark theme.
+- **NiceGUI** (a Python framework on Quasar/Vue) was chosen over Streamlit for real control over the design: 3D flip cards, keyboard-driven tests, a canvas animation, and a light/dark theme.
 - **Plain CSV storage** with atomic writes (temporary file, then rename), so a crash cannot corrupt your diary.
 - **Accessible fallbacks:** the mode buttons work without the animation script, the animation is skipped when the system asks for reduced motion, and every button is reachable by keyboard.
 
